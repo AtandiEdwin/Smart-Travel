@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/colorAccent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:text="Date"/>
+        <TextView
+            android:gravity="center"
+            android:layout_marginEnd="30dp"
+            android:textColor="@android:color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/date"
+            android:textSize="24sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:text="Select pick point"
+            android:textSize="24sp"/>
+        <SearchView
+            android:background="@android:color/darker_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_height="35dp"
+            android:text="Select route"
+            android:textSize="24sp"/>
+        <EditText
+            android:background="@android:color/darker_gray"
+            android:textSize="20sp"
+            android:hint="Click to select route"
+            android:inputType="none"
+            android:focusable="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:id="@+id/EditRoute"/>
+
+    </LinearLayout>
+
+   <androidx.recyclerview.widget.RecyclerView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginStart="10dp"
+       android:layout_marginEnd="10dp"
+       android:background="@color/colorPrimaryDark"
+       android:id="@+id/routeRecyclerId"
+       android:visibility="gone"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:text="Next"
+        android:id="@+id/BtnNext"
+        android:textColor="@android:color/white"
+        android:background="@color/colorButtons"
+        android:layout_margin="20dp"
+        android:drawableEnd="@drawable/ic_next"/>
+
+
+</LinearLayout>
