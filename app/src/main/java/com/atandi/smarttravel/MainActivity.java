@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.atandi.smarttravel.Activities.HomeActivity;
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
 
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         setContentView(R.layout.activity_main);
 
         adapterViewFlipper = findViewById(R.id.adapterFlipperId);
+
+        Button goAdmin  = findViewById(R.id.goId);
+        goAdmin.setOnClickListener(this);
 
 //        FlipperAdapter adapter = new FlipperAdapter(this,IMAGES,TEXT);
 //        adapterViewFlipper.setAdapter(adapter);
@@ -81,6 +86,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
 
         startActivity(intent);
+
+        if(v.getId()==R.id.goId){
+            startActivity(new Intent(MainActivity.this, AdminMainActivity.class));
+        }
 
     }
 
