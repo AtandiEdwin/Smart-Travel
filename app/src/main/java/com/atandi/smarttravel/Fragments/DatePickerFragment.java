@@ -42,13 +42,16 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         if(view.isShown()){
             if(tag.equals("from")){
-                String fromdate = year+"-"+ month+1 +"-"+dayOfMonth ;
+                int m = month + 1;
+                String fromdate =dayOfMonth+"-"+ m +"-"+year;
+
                 Intent fromintent = new Intent("from-date");
                 fromintent.putExtra("fromdate",fromdate);
                 LocalBroadcastManager.getInstance(getContext()).sendBroadcast(fromintent);
             }
             else if(tag.equals("to")){
-                String todate = year +"-"+ month+1 +"-"+dayOfMonth;
+                int m = month + 1;
+                String todate = dayOfMonth+"-"+ m +"-"+year ;
                 Intent tointent = new Intent("to-date");
                 tointent.putExtra("todate",todate);
                 LocalBroadcastManager.getInstance(getContext()).sendBroadcast(tointent);

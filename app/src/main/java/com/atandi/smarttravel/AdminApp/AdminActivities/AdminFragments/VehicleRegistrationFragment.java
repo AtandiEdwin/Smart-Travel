@@ -1,15 +1,19 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,15 +47,17 @@ public class VehicleRegistrationFragment extends Fragment {
     Context context;
     LayoutInflater inflater;
 
-    EditText VRVehicleNumber,VRVOwnerName,VRVOwnerNumber,VRVSeats;
+    EditText VRVehicleNumber, VRVOwnerName, VRVOwnerNumber, VRVSeats;
     Spinner VRVSpinnerId;
     ImageView VRVpicId;
     Button BtnVRegister;
     List<String> mRoute;
+    TextView selctedroute;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.vehicle_register,container,false);
+        View v = inflater.inflate(R.layout.vehicle_register, container, false);
         return v;
     }
 
@@ -59,47 +65,32 @@ public class VehicleRegistrationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         VRVehicleNumber = view.findViewById(R.id.VRVehicleNumber);
-        VRVSpinnerId  = view.findViewById(R.id.VRVSpinnerId);
+        VRVSpinnerId = view.findViewById(R.id.VRVSpinnerId);
         VRVOwnerName = view.findViewById(R.id.VRVOwnerName);
         VRVOwnerNumber = view.findViewById(R.id.VRVOwnerNumber);
         VRVSeats = view.findViewById(R.id.VRVSeats);
         VRVpicId = view.findViewById(R.id.VRVpicId);
         BtnVRegister = view.findViewById(R.id.BtnVRegister);
         mRoute = new ArrayList<>();
-        fetchRoutes();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_dropdown_item,mRoute);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, mRoute);
         VRVSpinnerId.setAdapter(adapter);
 
-        BtnVRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RegisterVehicle();
-            }
-        });
-
-
-
-
-    }
-
-    private void fetchRoutes() {
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, FETCH_ROUTE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-
                 JSONArray jsonArray = null;
 
                 try {
                     jsonArray = new JSONArray(response);
 
-                    for(int i=0; i<jsonArray.length();i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
-                        JSONObject jsonObject =jsonArray.getJSONObject(i);
-                        String rn =jsonObject.getString("routename");
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String rn = jsonObject.getString("routename");
                         mRoute.add(rn);
                     }
+                    adapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -120,7 +111,22 @@ public class VehicleRegistrationFragment extends Fragment {
 
 
 
+        SpinnerListener(VRVSpinnerId);
+
+
+        BtnVRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterVehicle();
+            }
+        });
+
     }
+
+    private void SpinnerListener(Spinner spinner) {
+        VRVSpinnerId.setOnItemSelectedListener(new mySelectedListener());
+    }
+
 
     private void RegisterVehicle() {
         final String plates = VRVehicleNumber.getText().toString();
@@ -132,27 +138,53 @@ public class VehicleRegistrationFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_VEHICLE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(context, "okey" + response, Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder =new AlertDialog.Builder(getContext());
+                builder.setTitle("Smart Travel");
+                builder.setMessage("Vehicle has been registered");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        VRVehicleNumber.setText("");
+                        VRVOwnerName.setText("");
+                        VRVOwnerNumber.setText("");
+                        VRVpicId.setImageResource(R.drawable.ic_car);
+                        VRVSeats.setText("");
+                    }
+                });
+                builder.create().show();
+
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "okay" + error, Toast.LENGTH_SHORT).show();
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> vMap = new HashMap<>();
-                vMap.put("vehicle_plate",plates);
-                vMap.put("vehicle_owner",owner);
-                vMap.put("owner_phone",phones);
-                vMap.put("vehicle_number_of_seats",seats);
-                vMap.put("routeName",route);
+                Map<String, String> vMap = new HashMap<>();
+                vMap.put("vehicle_plate", plates);
+                vMap.put("vehicle_owner", owner);
+                vMap.put("owner_phone", phones);
+                vMap.put("vehicle_number_of_seats", seats);
+                vMap.put("routeName", route);
                 return vMap;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
+    }
+
+    public class mySelectedListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView parent, View view, int pos, long id) {
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
     }
 }

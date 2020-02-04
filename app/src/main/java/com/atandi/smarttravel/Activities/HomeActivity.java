@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("header");
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(title);
+        toolbar.setTitle("changed");
         setSupportActionBar(toolbar);
 
         if(title == null){

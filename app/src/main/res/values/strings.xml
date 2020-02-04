@@ -61,4 +61,15 @@
     <string name="register">Register</string>
     <string name="click_here_to_register">Click here to register</string>
     <string name="click_here_to_login">click here to login</string>
+    <string name="click_here_to_add_new_route">Click here to add new route</string>
+    <string name="set_remaing_seats">Set Remaing Seats</string>
+    <string name="add_route">Add Route</string>
+    <string name="route_name">Route Name :</string>
+    <string name="enter_route_details">Enter route details</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="tracking_enabled_notif">Tracking is currently enabled. Tap to cancel.</string>
+    <string name="test_email">admin@admin.com</string>
+    <string name="test_password">admin2020</string>
+    <string name="firebase_path">location</string>
 </resources>

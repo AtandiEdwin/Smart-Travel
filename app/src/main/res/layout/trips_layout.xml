@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/colorAccentA"
     android:padding="10dp"
     android:layout_height="match_parent">
 
@@ -131,7 +131,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center"
             android:text="Select the dates by clicking on the calender then click the load button. All your trips will be displayed here"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/colorAccent"/>
     </LinearLayout>
 
 

@@ -1,6 +1,8 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,27 +66,13 @@ public class DriverRegistrationFragment extends Fragment {
 
         mPlates = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,mPlates);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_dropdown_item,mPlates);
         DRSpinnerId.setAdapter(adapter);
 
-        fetchPlates();
-
-        BtnDRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Registeradriver();
-            }
-        });
-
-
-    }
-
-    private void fetchPlates() {
         StringRequest fstring = new StringRequest(Request.Method.GET, FETCH_PLATES, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(context, "i" + response, Toast.LENGTH_SHORT).show();
-                JSONArray jsonArray = null;
+                JSONArray jsonArray;
 
                 try {
                     jsonArray = new JSONArray(response);
@@ -92,9 +80,10 @@ public class DriverRegistrationFragment extends Fragment {
                     for(int i=0; i<jsonArray.length();i++){
 
                         JSONObject jsonObject =jsonArray.getJSONObject(i);
-                        String rn =jsonObject.getString("routename");
-                        mPlates.add(rn);
+                        String plates =jsonObject.getString("vehicle_plate");
+                        mPlates.add(plates);
                     }
+                    adapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -111,6 +100,16 @@ public class DriverRegistrationFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(fstring);
 
+
+
+        BtnDRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Registeradriver();
+            }
+        });
+
+
     }
 
     private void Registeradriver() {
@@ -122,16 +121,24 @@ public class DriverRegistrationFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_DRIVER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(context, "okey"+ response, Toast.LENGTH_SHORT).show();
-
+                AlertDialog.Builder builder =new AlertDialog.Builder(getContext());
+                builder.setTitle("Smart Travel");
+                builder.setMessage("Driver has been registered");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DRName.setText("");
+                        DRNumber.setText("");
+//                        DriverRPic.setImageResource(R.drawable.ic_account);
+                    }
+                });
+                builder.create().show();
 
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "okey"+ error, Toast.LENGTH_SHORT).show();
-
                     }
                 }){
             @Override

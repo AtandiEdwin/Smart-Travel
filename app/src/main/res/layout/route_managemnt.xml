@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/colorPrimaryDarkA"
+    android:background="@color/colorAccentA"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -19,63 +19,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:background="@drawable/layout_shadow"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
+
+
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:text="@string/select_route"/>
-
-                <Spinner
-                    android:layout_width="100dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/routeSpinner"/>
-
-                <CheckBox
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="30dp"
-                    android:id="@+id/routeCheckbox"/>
+                    android:id="@+id/BtnManage"
+                    android:background="@android:color/holo_green_dark"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/manage"/>
 
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_margin="10dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:background="@drawable/layout_shadow"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/seats_remaining"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="3dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/routSeatsRemain"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="5dp"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/BtnManage"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/holo_green_dark"
-                    android:layout_marginStart="40dp"
-                    android:textSize="15sp"
-                    android:text="@string/manage"/>
-
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorButtons"
+                    android:id="@+id/newRoute"
+                    android:gravity="center"
+                    android:text="@string/click_here_to_add_new_route"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
         </LinearLayout>
@@ -92,48 +68,77 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manage"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="3dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manage"
-                    android:textSize="20sp"
-                    android:id="@+id/routNameManaged"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="5dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="@string/route"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="3dp"/>
-            </LinearLayout>
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="2dp"
+                android:id="@+id/manage"
+                android:visibility="gone"
                 android:layout_margin="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                <LinearLayout
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manage"
+                            android:textSize="20sp"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="3dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manage"
+                            android:textSize="20sp"
+                            android:id="@+id/routNameManaged"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="5dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="@string/route"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="3dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/layout_shadow"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:text="@string/select_route"/>
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="30dp"
+                            android:background="@drawable/layout_shadow"
+                            android:id="@+id/routeSpinner"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
+                    android:gravity="center"
                     android:background="@drawable/layout_shadow"
                     android:orientation="horizontal">
 
@@ -144,14 +149,11 @@
                         android:textSize="20sp"
                         android:textColor="@android:color/black"
                         android:layout_marginStart="3dp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manage"
-                        android:textSize="20sp"
-                        android:id="@+id/BookStatusCheck"
-                        android:textColor="@android:color/holo_green_dark"
-                        android:layout_marginStart="15dp"/>
+                   <Spinner
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_marginStart="30dp"
+                       android:id="@+id/bookStatusCheck"/>
 
                 </LinearLayout>
 
@@ -175,7 +177,7 @@
 
                         <Spinner
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:id="@+id/setVehicleSpinner"/>
 
                     </LinearLayout>
@@ -192,52 +194,111 @@
                             android:textColor="@android:color/black"
                             android:textSize="18sp"
                             android:layout_marginStart="3dp"
-                            android:text="@string/set_cost"/>
+                            android:text="@string/set_remaing_seats"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/set_cost"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:hint="14"
                             android:inputType="number"
-                            android:id="@+id/setVehicleCost"/>
+                            android:id="@+id/setVehicleRemainingSeats"/>
 
+                    </LinearLayout>
+
+                </LinearLayout>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Update Details"
+                        android:background="@color/colorButtons"
+                        android:layout_margin="20dp"
+                        android:id="@+id/BtnUpdateRoute"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:id="@+id/NewAddRoute"
+                android:layout_margin="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/enter_route_details"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/layout_shadow"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/route_name"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/black"/>
+                        <EditText
+                            android:layout_marginStart="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:gravity="center"
+                            android:background="@drawable/layout_shadow"
+                            android:hint="@string/route"
+                            android:id="@+id/newRouteName"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/layout_shadow"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:layout_marginStart="3dp"
-                            android:text="@string/set_route"/>
+                            android:text="@string/set_cost"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/black"/>
 
-                        <TextView
+                        <EditText
+                            android:layout_marginStart="20dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:id="@+id/setRouteId"
-                            android:layout_marginStart="3dp"
-                            android:text="@string/set_route"/>
+                            android:gravity="center"
+                            android:background="@drawable/layout_shadow"
+                            android:layout_height="60dp"
+                            android:hint="@string/set_cost"
+                            android:id="@+id/newRouteCost"/>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:layout_margin="20dp"
+                        android:textSize="20sp"
+                        android:text="@string/add_route"
+                        android:background="@color/colorButtons"
+                        android:id="@+id/BtnAddRoute"/>
 
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Update Details"
-                android:background="@color/colorButtons"
-                android:layout_margin="20dp"
-                android:id="@+id/BtnUpdateRoute"
-                android:textSize="20sp" />
         </LinearLayout>
+
+
     </androidx.cardview.widget.CardView>
 
 

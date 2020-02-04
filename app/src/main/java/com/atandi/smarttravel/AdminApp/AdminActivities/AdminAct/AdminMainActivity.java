@@ -61,11 +61,11 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
                 else if(v.getId()==R.id.linearDriverRegistration){
                     intent.putExtra("header","Driver Registration");
                 }
-                else if(v.getId()==R.id.linearUserNotification){
-                    intent.putExtra("header","User Notification");
-                }
-
                 startActivity(intent);
+
+                if(v.getId()==R.id.linearUserNotification){
+                    startActivity(new Intent(AdminMainActivity.this,TrackerActivity.class));
+                }
 
             }
 

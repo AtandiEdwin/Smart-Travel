@@ -201,6 +201,7 @@ public class RouteSelectingFragment extends Fragment {
                     StringRequest myrequest = new StringRequest(Request.Method.POST, FETCH_DETAILS, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Toast.makeText(getContext(), "okay", Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray ;
                             try {
                                 jsonArray = new JSONArray(response);
@@ -227,14 +228,14 @@ public class RouteSelectingFragment extends Fragment {
                                     mlist.add(driverpic);
 
                                     model.setMlist(mlist);
-
-
-
                                     FragmentManager fragmentManager = getFragmentManager();
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                     fragmentTransaction.replace(R.id.nav_host_fragmentTwo,new BookingFragment());
                                     fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();
+
+
+
 
 
                                 }
@@ -247,6 +248,7 @@ public class RouteSelectingFragment extends Fragment {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
 
                                 }
                             }){

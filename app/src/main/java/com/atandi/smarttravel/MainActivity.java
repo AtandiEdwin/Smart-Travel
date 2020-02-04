@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.atandi.smarttravel.Activities.HomeActivity;
+import com.atandi.smarttravel.Activities.MapsActivity;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
 
 
@@ -72,9 +73,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         else if(v.getId()==R.id.linearTrips){
             intent.putExtra("header","Trips");
         }
-        else if(v.getId()==R.id.linearTracker){
-            intent.putExtra("header","Tracker");
-        }
+
         else if (v.getId()==R.id.linearNotifications){
             intent.putExtra("header","Notifications");
         }
@@ -89,6 +88,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         if(v.getId()==R.id.goId){
             startActivity(new Intent(MainActivity.this, AdminMainActivity.class));
+        }
+        else if(v.getId()==R.id.linearTracker){
+            startActivity(new Intent(MainActivity.this, MapsActivity.class));
+
         }
 
     }
