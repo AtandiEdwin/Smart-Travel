@@ -58,7 +58,7 @@ public class RouteSelectingFragment extends Fragment {
     public RouteSelectingFragment() {
     }
 
-    EditText RouteEdit;
+    EditText RouteEdit,pick;
     private RouteViewModel routeViewModel;
     private DetailsViewModel model;
     Button BtnNext;
@@ -109,6 +109,8 @@ public class RouteSelectingFragment extends Fragment {
         TextView dateTextView = view.findViewById(R.id.date);
         dateTextView.setText(dates);
 
+        pick = view.findViewById(R.id.pick);
+
         BtnNext= view.findViewById(R.id.BtnNext);
         RouteEdit= view.findViewById(R.id.EditRoute);
 
@@ -122,6 +124,8 @@ public class RouteSelectingFragment extends Fragment {
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, FETCH_ROUTE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                mroute.clear();
 
                 JSONArray jsonArray = null;
 
@@ -167,12 +171,12 @@ public class RouteSelectingFragment extends Fragment {
         RouteEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ;
                 if(routeRecycler.getVisibility()==View.GONE){
                     routeRecycler.setVisibility(View.VISIBLE);
                     BtnNext.setVisibility(View.GONE);
                 }
                 else if(BtnNext.getVisibility()==View.GONE){
+                    routeRecycler.setVisibility(View.GONE);
                     BtnNext.setVisibility(View.VISIBLE);
                 }
             }
@@ -185,6 +189,7 @@ public class RouteSelectingFragment extends Fragment {
             public void onClick(View v) {
 
                 final String ROUTE =RouteEdit.getText().toString();
+                final String PICKPOINT = pick.getText().toString();
 
                 if(ROUTE.isEmpty()){
                     AlertDialog.Builder alert  = new AlertDialog.Builder(getContext());
@@ -196,12 +201,12 @@ public class RouteSelectingFragment extends Fragment {
                 else{
                     List routepick = new ArrayList();
                     routepick.add(ROUTE);
+                    routepick.add(PICKPOINT);
                     routeViewModel.setRoutepick(routepick);
 
                     StringRequest myrequest = new StringRequest(Request.Method.POST, FETCH_DETAILS, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(getContext(), "okay", Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray ;
                             try {
                                 jsonArray = new JSONArray(response);
@@ -230,14 +235,9 @@ public class RouteSelectingFragment extends Fragment {
                                     model.setMlist(mlist);
                                     FragmentManager fragmentManager = getFragmentManager();
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.nav_host_fragmentTwo,new BookingFragment());
+                                    fragmentTransaction.replace(R.id.nav_host_fragment,new BookingFragment());
                                     fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();
-
-
-
-
-
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -248,8 +248,6 @@ public class RouteSelectingFragment extends Fragment {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
-
                                 }
                             }){
                         @Override
@@ -262,8 +260,6 @@ public class RouteSelectingFragment extends Fragment {
                     RequestQueue request = Volley.newRequestQueue(getContext());
                     request.add(myrequest);
                 }
-
-
             }
         });
     }

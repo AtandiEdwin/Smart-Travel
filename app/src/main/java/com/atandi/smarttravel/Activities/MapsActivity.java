@@ -4,12 +4,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.atandi.smarttravel.MainActivity;
 import com.atandi.smarttravel.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,14 +63,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 MarkerOptions mop = new MarkerOptions();
                 mop.position(vehiceLocation);
-                mop.title("Vehicle: KBY 124Z");
+                mop.title("Vehicle");
                 mop.icon(bitmapDescriptorFromVector(MapsActivity.this, R.drawable.ic_iconlocatedriver));
                 mMap.addMarker(mop);
 
                 MarkerOptions user = new MarkerOptions();
                 user.position( new LatLng(-0.544552,37.455666));
-                user.title("Vehicle: KBY 124Z");
+                user.title("user");
                 mMap.addMarker(user);
+
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(vehiceLocation));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(vehiceLocation,13f));
@@ -89,4 +92,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MapsActivity.this, MainActivity.class));
+        finish();
+    }
 }

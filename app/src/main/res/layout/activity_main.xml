@@ -66,6 +66,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:background="@drawable/layout_shadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -265,20 +266,15 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_margin="10dp"
+            android:background="@drawable/layout_shadow"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="@android:color/darker_gray">
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_blue_dark"
-                    android:textSize="20sp"
-                    android:text="go admin"
-                    android:id="@+id/goId"/>
+                android:layout_above="@+id/goId"
+                android:backgroundTint="@color/colorAccentA">
+
 
                 <AdapterViewFlipper
                     android:layout_width="wrap_content"
@@ -287,6 +283,16 @@
                     android:flipInterval="2000"/>
 
             </androidx.cardview.widget.CardView>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:textSize="20sp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@android:color/white"
+                android:text="go admin"
+                android:id="@+id/goId"/>
         </RelativeLayout>
 
     </LinearLayout>

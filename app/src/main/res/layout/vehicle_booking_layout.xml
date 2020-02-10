@@ -6,29 +6,46 @@
     android:background="@color/colorAccentA"
     android:layout_height="match_parent">
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:clipToPadding="false"
+        android:paddingTop="5dp"
+        android:scrollbars="none"
+        android:scrollingCache="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_margin="3dp">
+        android:backgroundTint="@color/colorAccent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="5dp">
+            android:layout_margin="2dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="3dp">
+                android:layout_margin="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_margin="10dp">
+                    android:layout_margin="5dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -57,6 +74,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_car"
+                        android:background="@color/colorAccentA"
                         android:layout_gravity="center"
                         android:id="@+id/vehiclePic"/>
                     <TextView
@@ -212,6 +230,20 @@
 
             </LinearLayout>
 
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:background="@android:color/darker_gray"
+                        android:textSize="18sp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:id="@+id/customerPhoneId"
+                        android:inputType="phone"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="@string/enter_phone_number"/>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -243,7 +275,7 @@
                 android:text="Book Now"
                 android:id="@+id/bookNowId"
                 android:background="@color/colorButtons"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:textColor="@android:color/white"/>
 
             <androidx.cardview.widget.CardView
@@ -269,7 +301,8 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/ic_car"
+                        android:background="@color/colorAccentA"
+                        android:src="@drawable/ic_account"
                         android:id="@+id/driverPic"
                         android:layout_gravity="center"/>
                     <RelativeLayout
@@ -318,5 +351,6 @@
 
     </androidx.cardview.widget.CardView>
 
-
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

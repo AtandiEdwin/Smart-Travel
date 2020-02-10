@@ -60,17 +60,6 @@ public class RouteSelectAdapter extends RecyclerView.Adapter<RouteSelectAdapter.
     public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
         RouteSelectModel routeSelectModel = myRoutes.get(position);
         holder.textView.setText(routeSelectModel.getRouteName());
-//
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int pos =
-//                if(mcallback!=null){
-//                    mcallback.onClick(myRoutes.get(position));
-//                }
-//            }
-//        });
-
     }
 
     @Override

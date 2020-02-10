@@ -101,19 +101,20 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/layout_shadow"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:background="@drawable/icon_background"
                                 android:layout_width="50dp"
                                 android:layout_gravity="center"
+                                android:layout_marginStart="30dp"
                                 android:layout_height="50dp"
                                 android:src="@drawable/ic_car"/>
                             <TextView
                                 android:gravity="center"
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_marginStart="10dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/route_management"
@@ -128,18 +129,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:background="@drawable/icon_background"
+                                android:layout_marginStart="30dp"
+                                android:layout_gravity="center"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/ic_trip"/>
+                                android:src="@drawable/ic_active"/>
 
                             <TextView
                                 android:layout_marginTop="2dp"
                                 android:gravity="center"
+                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -155,16 +157,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:background="@drawable/icon_background"
+                                android:layout_marginStart="30dp"
                                 android:layout_width="50dp"
+                                android:layout_gravity="center"
                                 android:layout_height="50dp"
-                                android:src="@drawable/ic_tracker"/>
+                                android:src="@drawable/ic_booked"/>
                             <TextView
                                 android:layout_marginTop="2dp"
+                                android:layout_gravity="center"
                                 android:gravity="center"
                                 android:layout_marginStart="10dp"
                                 android:layout_width="wrap_content"
@@ -182,16 +185,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:background="@drawable/icon_background"
+                                android:layout_marginStart="30dp"
                                 android:layout_width="50dp"
+                                android:layout_gravity="center"
                                 android:layout_height="50dp"
-                                android:src="@drawable/ic_notifications"/>
+                                android:src="@drawable/ic_vehicle"/>
                             <TextView
                                 android:gravity="center"
+                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_height="wrap_content"
@@ -207,20 +211,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:background="@drawable/icon_background"
+                                android:layout_marginStart="30dp"
+                                android:layout_gravity="center"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/ic_account"/>
+                                android:src="@drawable/ic_driver"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:gravity="center"
+                                android:layout_gravity="center"
                                 android:text="@string/driver_registration"
                                 android:textColor="@android:color/black"
                                 android:textSize="24sp" />
@@ -233,22 +238,23 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/layout_shadow"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:background="@drawable/icon_background"
+                                android:layout_marginStart="30dp"
+                                android:layout_gravity="center"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/ic_info"/>
+                                android:src="@drawable/ic_start"/>
 
                             <TextView
+                                android:layout_gravity="center"
                                 android:gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:textColor="@android:color/black"
-                                android:text="@string/user_notification"
+                                android:text="@string/start_tracker"
                                 android:textSize="24sp"/>
 
                         </LinearLayout>

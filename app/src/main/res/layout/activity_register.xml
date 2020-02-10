@@ -39,7 +39,7 @@
             android:textSize="20sp"
             android:hint="username"
             android:inputType="textEmailAddress"
-            android:id="@+id/userNameId"/>
+            android:id="@+id/RuserNameId"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             android:textSize="20sp"
             android:hint="Email@xxx"
             android:inputType="textEmailAddress"
-            android:id="@+id/emailUserId"/>
+            android:id="@+id/RemailUserId"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:background="@drawable/layout_shadow"
             android:textSize="20sp"
             android:hint="password"
-            android:id="@+id/passwordUserId"/>
+            android:id="@+id/RpasswordUserId"/>
 
         <Button
             android:layout_width="match_parent"

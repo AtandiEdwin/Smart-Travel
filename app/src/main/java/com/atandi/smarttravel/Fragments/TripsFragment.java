@@ -150,8 +150,9 @@ public class TripsFragment extends Fragment{
                                             String tripCost =jsonObject.getString("trip_cost");
                                             String tripDate =jsonObject.getString("trip_date");
                                             String seatsBooked = jsonObject.getString("seatsBooked");
+                                            String tripstatus = jsonObject.getString("status");
 
-                                            TripsModel model = new TripsModel(routeName,vehiclePlate,tripCost,tripDate,seatsBooked);
+                                            TripsModel model = new TripsModel(routeName,vehiclePlate,tripCost,tripDate,seatsBooked,tripstatus);
                                             myTrips.add(model);
 
                                         }
@@ -210,4 +211,6 @@ public class TripsFragment extends Fragment{
             toDates.setText(intent.getStringExtra("todate"));
         }
     };
+
+
 }

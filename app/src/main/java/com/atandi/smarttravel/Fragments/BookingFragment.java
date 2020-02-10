@@ -85,6 +85,7 @@ public class BookingFragment extends Fragment {
         seatsRemainingId = view.findViewById(R.id.seatsRemainingId);
         driverNameId = view.findViewById(R.id.driverNameId);
         driverPhoneId = view.findViewById(R.id.driverPhoneId);
+        final EditText customerPhoneId = view.findViewById(R.id.customerPhoneId);
 
 
 
@@ -116,12 +117,13 @@ public class BookingFragment extends Fragment {
 
                 finaldetails.add(plateNumberId.getText());
                 finaldetails.add(bookedSeatsId.getText().toString());
+                finaldetails.add(customerPhoneId.getText().toString());
 
                 summaryViewModel.setSummary(finaldetails);
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragmentTwo,new SummaryFragment());
+                fragmentTransaction.replace(R.id.nav_host_fragment,new SummaryFragment());
                 fragmentTransaction.commit();
             }
         });

@@ -46,10 +46,12 @@
             android:textColor="@android:color/holo_orange_dark"
             android:text="Select pick point"
             android:textSize="24sp"/>
-        <SearchView
-            android:background="@android:color/darker_gray"
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="45dp"
+            android:background="@android:color/darker_gray"
+            android:hint="@string/pick_point"
+            android:id="@+id/pick"/>
 
 
     </LinearLayout>

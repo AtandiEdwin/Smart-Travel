@@ -69,4 +69,9 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
 
             }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(AdminMainActivity.this,MainActivity.class));
+        finish();
+    }
 }

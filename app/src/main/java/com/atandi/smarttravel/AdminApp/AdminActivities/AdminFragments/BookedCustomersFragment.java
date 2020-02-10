@@ -8,18 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAdapters.PendingUserAdapter;
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.PendingUserModel;
 import com.atandi.smarttravel.R;
 
 import org.json.JSONArray;
@@ -27,8 +32,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.atandi.smarttravel.Constants.Links.FETCH_PENDING_USERS;
 import static com.atandi.smarttravel.Constants.Links.FETCH_PLATES;
 import static com.atandi.smarttravel.Constants.Links.FETCH_ROUTE;
 
@@ -39,6 +47,7 @@ public class BookedCustomersFragment extends Fragment {
     Button BtnLoadUsers;
     RecyclerView pendingUserRecycler;
     List<String> vehiclelist,routelist;
+    List<PendingUserModel> mUser;
 
     @Nullable
     @Override
@@ -56,9 +65,11 @@ public class BookedCustomersFragment extends Fragment {
         BtnLoadUsers = view.findViewById(R.id.BtnLoadUsers);
         pendingUserRecycler = view.findViewById(R.id.pendingUserRecycler);
         pendingUserRecycler.setHasFixedSize(true);
+        pendingUserRecycler.setNestedScrollingEnabled(false);
 
         vehiclelist = new ArrayList<>();
         routelist = new ArrayList<>();
+        mUser = new ArrayList<>();
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, vehiclelist);
         pendingUserSpinner.setAdapter(adapter);
@@ -130,10 +141,68 @@ public class BookedCustomersFragment extends Fragment {
         RequestQueue mrequestQueue = Volley.newRequestQueue(getContext());
         mrequestQueue.add(stringRequest);
 
+        BtnLoadUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pendingUserRecycler.getVisibility()==View.GONE){
+                    pendingUserRecycler.setVisibility(View.VISIBLE);
+                }
+                else {
+                    pendingUserRecycler.setVisibility(View.GONE);
+                }
+                loadUsers();
+
+            }
+        });
+    }
+
+    private void loadUsers() {
+       final String plate_number = pendingUserSpinner.getSelectedItem().toString();
+       final  String routename = pendingUserRouteSpinner.getSelectedItem().toString();
+        final StringRequest pstringRequest = new StringRequest(Request.Method.POST, FETCH_PENDING_USERS, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONArray jsonArray;
+                mUser.clear();
+                try {
+                    jsonArray = new JSONArray(response);
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String phones = jsonObject.getString("user_phone");
+                        String pickpoint = jsonObject.getString("pickpoint");
+                        PendingUserModel pendingUserModel = new PendingUserModel(phones,pickpoint);
+                        mUser.add(pendingUserModel);
+                    }
+                    PendingUserAdapter adapter = new PendingUserAdapter(getContext(),mUser);
+                    pendingUserRecycler.setAdapter(adapter);
+                    pendingUserRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
 
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("routename",routename);
+                map.put("plate_number",plate_number);
+                return map;
+            }
+        };
 
-
+        RequestQueue mrequestQueue = Volley.newRequestQueue(getContext());
+        mrequestQueue.add(pstringRequest);
 
     }
 }

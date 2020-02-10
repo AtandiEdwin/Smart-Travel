@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,18 +14,27 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.StringRequest;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
+import com.atandi.smarttravel.MainActivity;
+import com.atandi.smarttravel.Models.User;
 import com.atandi.smarttravel.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
     TextView toLoin;
     Button BtnRegister;
-    EditText passwordUserId,emailUserId,userNameId;
+    EditText RpasswordUserId,RemailUserId,RuserNameId;
 
     private FirebaseAuth mAuth;
 
@@ -36,9 +46,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         toLoin = findViewById(R.id.toLoin);
         BtnRegister  =findViewById(R.id.BtnRegister);
-        passwordUserId = findViewById(R.id.passwordUserId);
-        emailUserId = findViewById(R.id.emailUserId);
-        userNameId =findViewById(R.id.userNameId);
+        RpasswordUserId = findViewById(R.id.RpasswordUserId);
+        RemailUserId = findViewById(R.id.RemailUserId);
+        RuserNameId =findViewById(R.id.RuserNameId);
 
 
 
@@ -51,37 +61,59 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
       BtnRegister.setOnClickListener(new View.OnClickListener() {
-          final String email = emailUserId.getText().toString();
-          final String password = passwordUserId.getText().toString();
+
           @Override
           public void onClick(View v) {
+              final String email = RemailUserId.getText().toString();
+              final String password = RpasswordUserId.getText().toString();
+              final String username = RuserNameId.getText().toString();
 
-              if(email.isEmpty() && password.isEmpty()){
-                  if(email.isEmpty()){
-                      Toast.makeText(RegisterActivity.this, "eemeail", Toast.LENGTH_SHORT).show();
-                  }
-                  else if (password.isEmpty()){
-                      Toast.makeText(RegisterActivity.this, "xxx", Toast.LENGTH_SHORT).show();
-                  }
-                  Toast.makeText(RegisterActivity.this, "check", Toast.LENGTH_SHORT).show();
-              }
-         else{
-                  mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-
-                          if(task.isComplete()){
-                              startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                              finish();
-                          }
-                          else{
-                              Toast.makeText(RegisterActivity.this, "login failed", Toast.LENGTH_SHORT).show();
-                          }
-
-                      }
-                  });
+              if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username)) {
+                  Toast.makeText(RegisterActivity.this, "All fields", Toast.LENGTH_SHORT).show();
+              } else if (password.length() < 6) {
+                  Toast.makeText(RegisterActivity.this, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show();
+              } else {
+                  register(email, password, username);
               }
           }
       });
+    }
+
+    public void register(String memail,String mpassword, final String musername){
+
+        mAuth.createUserWithEmailAndPassword(memail,mpassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isComplete()){
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    assert firebaseUser != null;
+                    String userId = firebaseUser.getUid();
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Vehicles");
+
+                    HashMap<String,String> hashMap = new HashMap<>();
+                    hashMap.put("id",userId);
+                    hashMap.put("vehicle_number",musername);
+
+                    reference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isComplete()){
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(RegisterActivity.this, "Email already registered", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+
     }
 }

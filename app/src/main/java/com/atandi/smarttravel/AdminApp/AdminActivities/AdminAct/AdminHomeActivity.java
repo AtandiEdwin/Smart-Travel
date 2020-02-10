@@ -77,7 +77,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(fragment,title);
-                fragmentTransaction.replace(R.id.adminNav_one_fragmentTwo,fragment);
+                fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
                 fragmentTransaction.commit();
             }
 

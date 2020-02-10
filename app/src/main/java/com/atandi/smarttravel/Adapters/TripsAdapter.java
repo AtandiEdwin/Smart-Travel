@@ -52,6 +52,7 @@ public class TripsAdapter extends RecyclerView.Adapter<MyTripViewHolder> {
         String cost ="Ksh: " + model.getTripCost();
         holder.tripCost.setText(cost);
         holder.seatsBooked.setText(model.getSeatsbooked());
+        holder.tripstatus.setText(model.getTripstatus());
 
     }
 
@@ -63,7 +64,7 @@ public class TripsAdapter extends RecyclerView.Adapter<MyTripViewHolder> {
 
 class MyTripViewHolder extends RecyclerView.ViewHolder{
 
-    TextView tripRouteName,tripCost,tripDate,tripVehicle,seatsBooked;
+    TextView tripRouteName,tripCost,tripDate,tripVehicle,seatsBooked,tripstatus;
 
     public MyTripViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -73,6 +74,7 @@ class MyTripViewHolder extends RecyclerView.ViewHolder{
         tripVehicle = itemView.findViewById(R.id.vehicleId);
         tripRouteName = itemView.findViewById(R.id.routename);
         seatsBooked = itemView.findViewById(R.id.seatsBooked);
+        tripstatus = itemView.findViewById(R.id.tripstatus);
 
     }
 }

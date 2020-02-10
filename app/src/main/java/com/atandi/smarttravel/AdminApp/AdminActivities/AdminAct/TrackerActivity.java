@@ -82,7 +82,7 @@ public class TrackerActivity extends AppCompatActivity {
                 Toast.makeText(this, "GPS tracking enabled", Toast.LENGTH_SHORT).show();
 
 //Close TrackerActivity and launch the maps activity
-                startActivity(new Intent(TrackerActivity.this, MapsActivity.class));
+//                startActivity(new Intent(TrackerActivity.this, MapsActivity.class));
                 finish();
 
 

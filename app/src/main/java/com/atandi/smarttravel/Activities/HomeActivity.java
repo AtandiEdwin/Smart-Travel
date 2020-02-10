@@ -44,8 +44,8 @@ public class HomeActivity extends AppCompatActivity {
         bundle = new Bundle();
         Intent intent = getIntent();
         String title = intent.getStringExtra("header");
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("changed");
+        Toolbar toolbar = findViewById(R.id.toolbars);
+        toolbar.setTitle(title);
         setSupportActionBar(toolbar);
 
         if(title == null){
@@ -87,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.id.nav_notifications,R.id.nav_account,R.id.nav_info, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragmentOne);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(fragment,title);
-        fragmentTransaction.replace(R.id.nav_host_fragmentTwo,fragment);
+        fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
         fragmentTransaction.commit();
     }
 
@@ -109,7 +109,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragmentOne);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }

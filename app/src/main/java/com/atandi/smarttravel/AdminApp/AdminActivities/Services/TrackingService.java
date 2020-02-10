@@ -13,8 +13,10 @@ import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.Vehicle;
 import com.atandi.smarttravel.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -25,8 +27,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class TrackingService extends Service {
 
@@ -68,55 +74,32 @@ public class TrackingService extends Service {
         protected BroadcastReceiver stopReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-//Unregister the BroadcastReceiver when the notification is tapped//
-
                 unregisterReceiver(stopReceiver);
-
 //Stop the Service//
-
                 stopSelf();
             }
         };
 
         private void loginToFirebase() {
-
-//Authenticate with Firebase, using the email and password we created earlier//
-
             String email = getString(R.string.test_email);
             String password = getString(R.string.test_password);
-
-//Call OnCompleteListener if the user is signed in successfully//
 
             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                     email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(Task<AuthResult> task) {
 
-//If the user has been authenticated...//
-
                     if (task.isSuccessful()) {
-
-//...then call requestLocationUpdates//
-
                         requestLocationUpdates();
                     } else {
-
-//If sign in fails, then log the error//
-
                         Log.d(TAG, "Firebase authentication failed");
                     }
                 }
             });
         }
 
-//Initiate the request to track the device's location//
-
         private void requestLocationUpdates() {
             LocationRequest request = new LocationRequest();
-
-//Specify how often your app should request the device’s location//
-
             request.setInterval(10000);
 
 //Get the most accurate location data available//
@@ -135,18 +118,36 @@ public class TrackingService extends Service {
 
                 client.requestLocationUpdates(request, new LocationCallback() {
                     @Override
-                    public void onLocationResult(LocationResult locationResult) {
+                    public void onLocationResult(final LocationResult locationResult) {
 
 //Get a reference to the database, so your app can perform read and write operations//
+                        FirebaseAuth mauth = FirebaseAuth.getInstance();
 
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
-                        Location location = locationResult.getLastLocation();
-                        if (location != null) {
+                        final FirebaseUser firebaseUser = mauth.getCurrentUser();
+
+                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
+                        ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                                    Vehicle vehicle = snapshot.getValue(Vehicle.class);
+
+                                        Location location = locationResult.getLastLocation();
+                                        if (location != null) {
 
 //Save the location data to the database//
 
-                            ref.setValue(location);
-                        }
+                                            ref.setValue(location);
+                                    }
+//                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 }, null);
             }

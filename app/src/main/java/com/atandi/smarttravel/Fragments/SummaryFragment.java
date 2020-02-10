@@ -39,7 +39,7 @@ public class SummaryFragment extends Fragment {
     private SummaryViewModel summaryViewModel;
     private RouteViewModel routeViewModel;
 
-    TextView endRouteId,endPickId,endSeatsId,endCostId,endVehicleId;
+    TextView endRouteId,endPickId,endSeatsId,endCostId,endVehicleId,endPhoneId;
 
     public SummaryFragment() {
     }
@@ -62,6 +62,7 @@ public class SummaryFragment extends Fragment {
                 endVehicleId.setText(list.get(1).toString());
                 endSeatsId.setText(list.get(2).toString());
                 endCostId.setText(list.get(0).toString());
+                endPhoneId.setText(list.get(3).toString());
             }
         });
 
@@ -70,7 +71,7 @@ public class SummaryFragment extends Fragment {
             @Override
             public void onChanged(List list) {
                 endRouteId.setText(list.get(0).toString());
-//                endPickId.setText(list.get(1).toString());
+                endPickId.setText(list.get(1).toString());
             }
         });
 
@@ -86,6 +87,7 @@ public class SummaryFragment extends Fragment {
         endRouteId = view.findViewById(R.id.endRouteId);
         endSeatsId = view.findViewById(R.id.endSeatsId);
         endVehicleId = view.findViewById(R.id.endVehicleId);
+        endPhoneId = view.findViewById(R.id.endPhoneId);
 
         Button BtnBack = view.findViewById(R.id.BtnBack);
         Button BtnOk = view.findViewById(R.id.BtnOk);
@@ -105,6 +107,7 @@ public class SummaryFragment extends Fragment {
                 final String seats_booked = endSeatsId.getText().toString();
                 final String totalcost = endCostId.getText().toString();
                 final String vehicle_plate = endVehicleId.getText().toString();
+                final String user_phone = endPhoneId.getText().toString();
 
                 StringRequest newStringRequest = new StringRequest(Request.Method.POST, SAVE_DETAILS, new Response.Listener<String>() {
                     @Override
@@ -144,6 +147,7 @@ public class SummaryFragment extends Fragment {
                         myMap.put("seats_booked",seats_booked);
                         myMap.put("totalcost",totalcost);
                         myMap.put("vehicle_plate",vehicle_plate);
+                        myMap.put("user_phone",user_phone);
 
                         return myMap;
                     }
