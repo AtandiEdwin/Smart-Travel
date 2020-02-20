@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "519580620139",
+    "firebase_url": "https://smart-travel-d39d4.firebaseio.com",
+    "project_id": "smart-travel-d39d4",
+    "storage_bucket": "smart-travel-d39d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519580620139:android:6bd3773d568f79755b682e",
+        "android_client_info": {
+          "package_name": "com.atandi.smarttravel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519580620139-lss4ao8b5uiv3jpt5adlof5hd71t0r8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atandi.smarttravel",
+            "certificate_hash": "011223ae829f67d65d9eba684be66296b33d83e8"
+          }
+        },
+        {
+          "client_id": "519580620139-bcdcrbq105m83a75it2enc1eb6mou0qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBRRDP26Eh7Nnb6PgTvHPPOqCtrfD8wgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519580620139-bcdcrbq105m83a75it2enc1eb6mou0qo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
