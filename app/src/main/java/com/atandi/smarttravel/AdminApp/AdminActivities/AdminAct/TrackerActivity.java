@@ -39,6 +39,7 @@ public class TrackerActivity extends AppCompatActivity {
                         Manifest.permission.ACCESS_FINE_LOCATION);
 
 //If the location permission has been granted, then start the TrackerService//
+//
 
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     startTrackerService();
@@ -56,35 +57,21 @@ public class TrackerActivity extends AppCompatActivity {
             public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
                     grantResults) {
 
-//If the permission has been granted...//
-
                 if (requestCode == PERMISSIONS_REQUEST && grantResults.length == 1
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-//...then start the GPS tracking service//
-
                     startTrackerService();
                 } else {
-
-//If the user denies the permission request, then display a toast with some more information//
 
                     Toast.makeText(this, "Please enable location services to allow GPS tracking", Toast.LENGTH_SHORT).show();
                 }
             }
 
-//Start the TrackerService//
-
             private void startTrackerService() {
+
                 startService(new Intent(this, TrackingService.class));
-
-//Notify the user that tracking has been enabled//
-
                 Toast.makeText(this, "GPS tracking enabled", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(TrackerActivity.this, AdminMapsActivity.class));
 
-//Close TrackerActivity and launch the maps activity
-//                startActivity(new Intent(TrackerActivity.this, MapsActivity.class));
                 finish();
-
-
     }
 }

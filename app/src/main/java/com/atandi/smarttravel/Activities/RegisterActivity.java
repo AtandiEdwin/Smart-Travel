@@ -81,39 +81,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void register(String memail,String mpassword, final String musername){
 
-        mAuth.createUserWithEmailAndPassword(memail,mpassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isComplete()){
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    assert firebaseUser != null;
-                    String userId = firebaseUser.getUid();
+        User user = new User(musername,memail,mpassword);
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Vehicles");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
 
-                    HashMap<String,String> hashMap = new HashMap<>();
-                    hashMap.put("id",userId);
-                    hashMap.put("vehicle_number",musername);
-
-                    reference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isComplete()){
-                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }
-                    });
-                }
-                else{
-                    Toast.makeText(RegisterActivity.this, "Email already registered", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
+        reference.child(memail).setValue(user);
 
     }
 }

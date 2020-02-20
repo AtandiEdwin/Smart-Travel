@@ -29,7 +29,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.TryModel;
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.Vehicle;
 import com.atandi.smarttravel.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -134,6 +137,10 @@ public class VehicleRegistrationFragment extends Fragment {
         final String phones = VRVOwnerNumber.getText().toString();
         final String seats = VRVSeats.getText().toString();
         final String route = VRVSpinnerId.getSelectedItem().toString();
+
+        Vehicle vehicle = new Vehicle(plates,plates);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Vehicle");
+        reference.child(plates).setValue(vehicle);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_VEHICLE, new Response.Listener<String>() {
             @Override

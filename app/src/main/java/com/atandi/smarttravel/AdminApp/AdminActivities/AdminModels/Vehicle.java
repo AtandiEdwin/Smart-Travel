@@ -2,11 +2,14 @@ package com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels;
 
 public class Vehicle {
     String vehicle_plate;
-    String Id;
+    String vehicle_password;
 
-    public Vehicle(String vehicle_plate, String id) {
+    public Vehicle() {
+    }
+
+    public Vehicle(String vehicle_plate, String vehicle_password) {
         this.vehicle_plate = vehicle_plate;
-        Id = id;
+        this.vehicle_password = vehicle_password;
     }
 
     public String getVehicle_plate() {
@@ -17,11 +20,11 @@ public class Vehicle {
         this.vehicle_plate = vehicle_plate;
     }
 
-    public String getId() {
-        return Id;
+    public String getVehicle_password() {
+        return vehicle_password;
     }
 
-    public void setId(String id) {
-        Id = id;
+    public void setVehicle_password(String vehicle_password) {
+        this.vehicle_password = vehicle_password;
     }
 }

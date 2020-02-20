@@ -75,4 +75,13 @@
     <string name="start_tracker">Start Tracker</string>
     <string name="pick_point">pick point</string>
     <string name="enter_phone_number">enter phone number</string>
+    <string name="title_activity_admin_maps">Map</string>
+
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="title_activity_manage_account">ManageAccountActivity</string>
+
+    <string name="change_password_text">You are about to change your password. Changing your password will require you to put your current password and anew password to effectively change it.</string>
+
+    <string name="delete_account_text">Deleting your account deltes all your information from smart travel including your trips summary</string>
 </resources>

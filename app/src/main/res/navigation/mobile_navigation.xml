@@ -3,41 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_vehicle">
+    app:startDestination="@+id/nav_start">
+    <fragment
+        android:id="@+id/nav_start"
+        android:name="com.atandi.smarttravel.Activities.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_vehicle"
+        android:id="@+id/nav_home"
         android:name="com.atandi.smarttravel.Activities.ui.home.HomeFragment"
         android:label="@string/vehicle_booking"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_trip"
+        android:id="@+id/nav_gallery"
         android:name="com.atandi.smarttravel.Activities.ui.gallery.GalleryFragment"
         android:label="@string/trips"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_tracker"
+        android:id="@+id/nav_slideshow"
         android:name="com.atandi.smarttravel.Activities.ui.slideshow.SlideshowFragment"
         android:label="@string/tracker"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
-        android:id="@+id/nav_notifications"
+        android:id="@+id/nav_tools"
+        android:name="com.atandi.smarttravel.Activities.ui.tools.ToolsFragment"
+        android:label="@string/account"
+        tools:layout="@layout/fragment_tools" />
+    <fragment
+        android:id="@+id/nav_account"
         android:name="com.atandi.smarttravel.Activities.ui.tools.ToolsFragment"
         android:label="@string/notifications"
         tools:layout="@layout/fragment_tools" />
+    <fragment
+        android:id="@+id/nav_info"
+        android:name="com.atandi.smarttravel.Activities.ui.tools.ToolsFragment"
+        android:label="@string/info"
+        tools:layout="@layout/fragment_tools" />
 
     <fragment
-        android:id="@+id/nav_account"
+        android:id="@+id/nav_share"
         android:name="com.atandi.smarttravel.Activities.ui.share.ShareFragment"
-        android:label="@string/account"
+        android:label="@string/menu_share"
         tools:layout="@layout/fragment_share" />
 
     <fragment
-        android:id="@+id/nav_info"
+        android:id="@+id/nav_send"
         android:name="com.atandi.smarttravel.Activities.ui.send.SendFragment"
-        android:label="@string/info"
+        android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />
 </navigation>

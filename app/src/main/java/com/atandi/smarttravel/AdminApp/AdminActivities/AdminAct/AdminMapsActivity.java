@@ -1,4 +1,4 @@
-package com.atandi.smarttravel.Activities;
+package com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -28,14 +28,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_admin_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -61,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 longitu[0] = (Double) dataSnapshot.child("longitude").getValue();
 
                 if(latitu[0]==null && longitu[0]==null){
-                    Toast.makeText(MapsActivity.this, "The vehicle tracker is off at the moment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminMapsActivity.this, "The tracker is disabled", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     LatLng vehiceLocation = new LatLng(latitu[0], longitu[0]);
@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     MarkerOptions mop = new MarkerOptions();
                     mop.position(vehiceLocation);
                     mop.title("Vehicle");
-                    mop.icon(bitmapDescriptorFromVector(MapsActivity.this, R.drawable.ic_iconlocatedriver));
+                    mop.icon(bitmapDescriptorFromVector(AdminMapsActivity.this, R.drawable.ic_iconlocatedriver));
                     mMap.addMarker(mop);
 
                     MarkerOptions user = new MarkerOptions();
@@ -103,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(MapsActivity.this, MainActivity.class));
+        startActivity(new Intent(AdminMapsActivity.this, AdminMainActivity.class));
         finish();
     }
 }

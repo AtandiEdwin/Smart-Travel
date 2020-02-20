@@ -5,27 +5,27 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_book"
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_car"
             android:title="@string/vehicle_booking" />
         <item
-            android:id="@+id/nav_trip"
+            android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_trip"
             android:title="@string/trips" />
         <item
-            android:id="@+id/nav_tracker"
+            android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_tracker"
             android:title="@string/tracker" />
-        <item
-            android:id="@+id/nav_notifications"
-            android:icon="@drawable/ic_notifications"
-            android:title="@string/notifications" />
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
             android:title="@string/account" />
         <item
             android:id="@+id/nav_info"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/notifications" />
+        <item
+            android:id="@+id/nav_tools"
             android:icon="@drawable/ic_info"
             android:title="@string/info" />
     </group>
@@ -35,11 +35,11 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="@string/share" />
+                android:title="@string/menu_share" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="@string/send" />
+                android:title="@string/menu_send" />
         </menu>
     </item>
 

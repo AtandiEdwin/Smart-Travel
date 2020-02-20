@@ -1,6 +1,8 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminAdapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,32 +68,51 @@ public class PendingUserAdapter extends RecyclerView.Adapter<PendingUserAdapter.
             @Override
             public void onClick(View v) {
                 if(holder.pendUserCheckBox.isChecked()){
-                    final  String status = "booked";
-                    final  String uphone = holder.pendUserPhone.getText().toString();
 
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, UPDATE_USER_STATUS, new Response.Listener<String>() {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Smart Travel");
+                    builder.setMessage("Are you sure the customer as boarded ?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onResponse(String response) {
-                            holder.itemView.setVisibility(View.GONE);
-                            Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+                        public void onClick(DialogInterface dialog, int which) {
+                            final  String status = "booked";
+                            final  String uphone = holder.pendUserPhone.getText().toString();
 
-                        }
-                    },
-                            new Response.ErrorListener() {
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, UPDATE_USER_STATUS, new Response.Listener<String>() {
                                 @Override
-                                public void onErrorResponse(VolleyError error) {
+                                public void onResponse(String response) {
+                                    holder.itemView.setVisibility(View.GONE);
+                                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0,0));
+                                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+
                                 }
-                            }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String,String> map = new HashMap<>();
-                            map.put("status",status);
-                            map.put("phone",uphone);
-                            return map;
+                            },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                        }
+                                    }){
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String,String> map = new HashMap<>();
+                                    map.put("status",status);
+                                    map.put("phone",uphone);
+                                    return map;
+                                }
+                            };
+                            RequestQueue mrequestQueue = Volley.newRequestQueue(context);
+                            mrequestQueue.add(stringRequest);
                         }
-                    };
-                    RequestQueue mrequestQueue = Volley.newRequestQueue(context);
-                    mrequestQueue.add(stringRequest);
+                    });
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            builder.setCancelable(true);
+                        }
+                    });
+                    builder.create().show();
+
                 }
             }
         });

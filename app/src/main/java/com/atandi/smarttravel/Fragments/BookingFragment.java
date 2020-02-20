@@ -1,5 +1,6 @@
 package com.atandi.smarttravel.Fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.Models.DetailsViewModel;
 import com.atandi.smarttravel.Models.SummaryViewModel;
 import com.atandi.smarttravel.R;
@@ -27,14 +30,11 @@ public class BookingFragment extends Fragment {
 
     private DetailsViewModel detailsViewModel;
     private SummaryViewModel summaryViewModel;
-    String x;
     TextView plateNumberId,driverNameId,driverPhoneId,numberSeatsId,seatsRemainingId,tripcost;
-
+    MyBuilderClass myBuilderClass = new MyBuilderClass();
 
     public BookingFragment() {
     }
-
-
 
     @Nullable
     @Override
@@ -52,7 +52,6 @@ public class BookingFragment extends Fragment {
             @Override
             public void onChanged(List list) {
                 plateNumberId.setText(list.get(0).toString());
-                //
                 numberSeatsId.setText(list.get(2).toString());
                 seatsRemainingId.setText(list.get(3).toString());
                 tripcost.setText(list.get(4).toString());
@@ -87,47 +86,34 @@ public class BookingFragment extends Fragment {
         driverPhoneId = view.findViewById(R.id.driverPhoneId);
         final EditText customerPhoneId = view.findViewById(R.id.customerPhoneId);
 
-
-
-
-
-//        final int totalcost = costperseat * nseats;
-
-
-
         BtnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List finaldetails  = new ArrayList();
-                int NSEAT = 0;
-                int tt=0;
-                if(bookedSeatsId.getText().toString().isEmpty()){
 
+                if(bookedSeatsId.getText().toString().isEmpty() ||customerPhoneId.getText().toString().isEmpty()){
+
+                    myBuilderClass.MyBuilder(getContext()," please check that you have provided the required details");
                 }
                 else{
-                    NSEAT = Integer.parseInt(bookedSeatsId.getText().toString());
+                    List finaldetails  = new ArrayList();
+                    int NSEAT = Integer.parseInt(bookedSeatsId.getText().toString());
                     int price = Integer.parseInt(tripcost.getText().toString());
+                    int totalprice = NSEAT*price;
 
-                    tt = NSEAT*price;
+                    final String finalprice= String.valueOf(totalprice);
+                    finaldetails.add(finalprice);
+                    finaldetails.add(plateNumberId.getText());
+                    finaldetails.add(bookedSeatsId.getText().toString());
+                    finaldetails.add(customerPhoneId.getText().toString());
 
-                    final String mx= String.valueOf(tt);
-                    finaldetails.add(mx);
+                    summaryViewModel.setSummary(finaldetails);
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.nav_host_fragment,new SummaryFragment());
+                    fragmentTransaction.commit();
                 }
-
-
-                finaldetails.add(plateNumberId.getText());
-                finaldetails.add(bookedSeatsId.getText().toString());
-                finaldetails.add(customerPhoneId.getText().toString());
-
-                summaryViewModel.setSummary(finaldetails);
-
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment,new SummaryFragment());
-                fragmentTransaction.commit();
             }
         });
     }
-
-
 }

@@ -28,27 +28,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register"
+            android:text="Vehicle Login"
             android:textSize="30sp"
             android:textColor="@android:color/black"/>
 
         <EditText
+            android:id="@+id/vloginPlateId"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@drawable/layout_shadow"
-            android:textSize="20sp"
-            android:hint="username"
-            android:inputType="textEmailAddress"
-            android:id="@+id/RuserNameId"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_shadow"
-            android:textSize="20sp"
-            android:hint="07...."
-            android:inputType="phone"
-            android:id="@+id/RemailUserId"/>
+            android:hint="KKK 123K"
+            android:textSize="20sp" />
 
         <EditText
             android:layout_width="match_parent"
@@ -56,27 +46,18 @@
             android:layout_marginStart="3dp"
             android:background="@drawable/layout_shadow"
             android:textSize="20sp"
-            android:inputType="textPassword"
             android:hint="password"
-            android:id="@+id/RpasswordUserId"/>
+            android:id="@+id/vloginPasswordId"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:id="@+id/BtnRegister"
+            android:id="@+id/Btnlogin"
             android:textColor="@android:color/white"
-            android:text="@string/register"
+            android:text="@string/login"
             android:background="@color/colorButtons"
             android:layout_margin="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/click_here_to_login"
-            android:textColor="@color/colorButtons"
-            android:id="@+id/toLoin"/>
-
 
 
     </LinearLayout>

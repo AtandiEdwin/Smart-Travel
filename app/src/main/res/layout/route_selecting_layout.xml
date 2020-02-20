@@ -46,6 +46,9 @@
             android:textColor="@android:color/holo_orange_dark"
             android:text="Select pick point"
             android:textSize="24sp"/>
+
+
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="45dp"

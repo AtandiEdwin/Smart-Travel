@@ -14,10 +14,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -83,13 +86,40 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_tracker, R.id.nav_trip, R.id.nav_tracker,
-                R.id.nav_notifications,R.id.nav_account,R.id.nav_info, R.id.nav_share, R.id.nav_send)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                int myIds = destination.getId();
+
+                if(myIds == R.id.nav_home){
+                    Toast.makeText(HomeActivity.this, "Home clicked", Toast.LENGTH_SHORT).show();
+                }
+                else if(myIds==R.id.nav_gallery){
+                    Toast.makeText(HomeActivity.this, "trips clicked", Toast.LENGTH_SHORT).show();
+                }
+                else if(myIds==R.id.nav_slideshow){
+                    Toast.makeText(HomeActivity.this, "tracker clicked", Toast.LENGTH_SHORT).show();
+                }
+                else if(myIds==R.id.nav_tools){
+                    Toast.makeText(HomeActivity.this, "tools clicked", Toast.LENGTH_SHORT).show();
+                }
+                else if(myIds==R.id.nav_account){
+                    Toast.makeText(HomeActivity.this, "account clicked", Toast.LENGTH_SHORT).show();
+                }
+                else if(myIds==R.id.nav_info){
+                    Toast.makeText(HomeActivity.this, "info clicked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     private void StartFragment(Fragment fragment, String title) {

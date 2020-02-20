@@ -9,11 +9,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminLoginActivity;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
 import com.atandi.smarttravel.MainActivity;
+import com.atandi.smarttravel.Models.User;
 import com.atandi.smarttravel.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText loginEmailUserId,loginPasswordUserId;
     Button Btnlogin;
+    ImageButton BtnGoAdmin;
     TextView toRegister;
 
     private FirebaseAuth mAuth;
@@ -53,7 +57,16 @@ public class LoginActivity extends AppCompatActivity {
         loginPasswordUserId = findViewById(R.id.loginPasswordUserId);
         Btnlogin = findViewById(R.id.Btnlogin);
         toRegister = findViewById(R.id.toRegister);
+        BtnGoAdmin = findViewById(R.id.BtnGoAdmin);
 
+
+        BtnGoAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, AdminLoginActivity.class));
+                finish();
+            }
+        });
 
 
         toRegister.setOnClickListener(new View.OnClickListener() {
@@ -70,16 +83,24 @@ public class LoginActivity extends AppCompatActivity {
                 final String mail = loginEmailUserId.getText().toString();
                 final String password = loginPasswordUserId.getText().toString();
 
-                final String[] myemail = {""};
-                final String[] mypassword = {""};
 
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Admin");
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        myemail[0] =(String) dataSnapshot.child("email").getValue();
-                        mypassword[0]= (String) dataSnapshot.child("password").getValue();
+
+                        User user = dataSnapshot.child(mail).getValue(User.class);
+
+                        if(user.getUserpassword().equals(password)){
+                            Intent intent =  new Intent(LoginActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{
+                            Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
@@ -89,39 +110,31 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-                if(TextUtils.isEmpty(mail)|| TextUtils.isEmpty(password)){
-                    Toast.makeText(LoginActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
-                }
-                else if(mail.equals(myemail[0]) && password.equals(mypassword[0])){
-                    Toast.makeText(LoginActivity.this, "okay", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if(task.isComplete()){
-                               Intent intent =  new Intent(LoginActivity.this, MainActivity.class);
-                               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
-                            else{
-                                Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    });
-
-                }
+//                if(TextUtils.isEmpty(mail)|| TextUtils.isEmpty(password)){
+//                    Toast.makeText(LoginActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
+//                }
+//                else if(mail.equals(myemail[0]) && password.equals(mypassword[0])){
+//                    Toast.makeText(LoginActivity.this, "okay", Toast.LENGTH_SHORT).show();
+//                }
+//                else{
+//                    mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                            if(task.isComplete()){
+//
+//                            }
+//                            else{
+//
+//                            }
+//
+//                        }
+//                    });
+//
+//                }
 
             }
         });
-
-
-
-
-
     }
 
     private void updateUI(FirebaseUser user) {

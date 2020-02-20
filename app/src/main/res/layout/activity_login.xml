@@ -37,8 +37,8 @@
             android:layout_height="80dp"
             android:background="@drawable/layout_shadow"
             android:textSize="20sp"
-            android:hint="Email@xxx"
-            android:inputType="textEmailAddress"
+            android:hint="07....."
+            android:inputType="phone"
             android:id="@+id/loginEmailUserId"/>
 
         <EditText
@@ -48,6 +48,7 @@
             android:background="@drawable/layout_shadow"
             android:textSize="20sp"
             android:hint="password"
+            android:inputType="textPassword"
             android:id="@+id/loginPasswordUserId"/>
 
         <Button
@@ -66,6 +67,20 @@
             android:text="@string/click_here_to_register"
             android:textColor="@color/colorButtons"
             android:id="@+id/toRegister"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_filter"
+                android:id="@+id/BtnGoAdmin"/>
+        </RelativeLayout>
+
+
 
 
 

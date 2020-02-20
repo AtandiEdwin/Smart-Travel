@@ -38,7 +38,7 @@ public class TrackingService extends Service {
 
         private static final String TAG = TrackingService.class.getSimpleName();
 
-        @Override
+    @Override
         public IBinder onBind(Intent intent) {
             return null;
         }
@@ -47,10 +47,10 @@ public class TrackingService extends Service {
         public void onCreate() {
             super.onCreate();
             buildNotification();
-            loginToFirebase();
+            requestLocationUpdates();
         }
 
-//Create the persistent notification//
+    //Create the persistent notification//
 
         private void buildNotification() {
             String stop = "stop";
@@ -75,34 +75,15 @@ public class TrackingService extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver(stopReceiver);
-//Stop the Service//
                 stopSelf();
             }
         };
 
-        private void loginToFirebase() {
-            String email = getString(R.string.test_email);
-            String password = getString(R.string.test_password);
 
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                    email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(Task<AuthResult> task) {
-
-                    if (task.isSuccessful()) {
-                        requestLocationUpdates();
-                    } else {
-                        Log.d(TAG, "Firebase authentication failed");
-                    }
-                }
-            });
-        }
 
         private void requestLocationUpdates() {
             LocationRequest request = new LocationRequest();
             request.setInterval(10000);
-
-//Get the most accurate location data available//
 
             request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
@@ -110,44 +91,17 @@ public class TrackingService extends Service {
             int permission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION);
 
-//If the app currently has access to the location permission...//
-
             if (permission == PackageManager.PERMISSION_GRANTED) {
-
-//...then request location updates//
 
                 client.requestLocationUpdates(request, new LocationCallback() {
                     @Override
                     public void onLocationResult(final LocationResult locationResult) {
 
-//Get a reference to the database, so your app can perform read and write operations//
-                        FirebaseAuth mauth = FirebaseAuth.getInstance();
-
-                        final FirebaseUser firebaseUser = mauth.getCurrentUser();
-
-                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
-                        ref.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                                    Vehicle vehicle = snapshot.getValue(Vehicle.class);
-
-                                        Location location = locationResult.getLastLocation();
-                                        if (location != null) {
-
-//Save the location data to the database//
-
-                                            ref.setValue(location);
-                                    }
-//                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
+                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Vehicle").child("kbh 283v").child(path);
+                        Location location = locationResult.getLastLocation();
+                        if (location != null) {
+                            ref.setValue(location);
+                        }
                     }
                 }, null);
             }

@@ -1,6 +1,5 @@
 package com.atandi.smarttravel.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,20 +7,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.atandi.smarttravel.Constants.MyBuilderClass;
+import com.atandi.smarttravel.EditFragments.ManageAccountFragment;
 import com.atandi.smarttravel.R;
 
 public class AccountsFragment extends Fragment {
 
     ListView listView;
-    String[] values = {"Check Account Balance","Change Account Password","Account Settings"};
-
+    String[] values = {"Check Account Balance","Account Settings"};
     public AccountsFragment() {
     }
 
@@ -37,39 +37,25 @@ public class AccountsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         listView  = view.findViewById(R.id.myListView);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,values);
-//        listView.setAdapter(adapter);
-
-        MyAdapter myAdapter = new MyAdapter(getActivity(),values);
-        listView.setAdapter(myAdapter);
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,values);
+        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String str = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+               if(str.equals("Check Account Balance")){
+                   MyBuilderClass myBuilderClass = new MyBuilderClass();
+                   myBuilderClass.MyBuilder(getContext(),"200");
+               }
+               else if(str.equals("Account Settings")){
+
+                   FragmentManager fragmentManager = getFragmentManager();
+                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                   fragmentTransaction.replace(R.id.nav_host_fragment,new ManageAccountFragment());
+                   fragmentTransaction.addToBackStack(null).commit();
+               }
             }
         });
-    }
-
-    class MyAdapter extends ArrayAdapter{
-        String[] str;
-
-        public MyAdapter(Context context,String[] titles){
-            super(context,R.layout.account_list_item,R.id.txttitle,titles);
-            this.str = titles;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = inflater.inflate(R.layout.account_list_item,parent,false);
-
-            TextView txttitle=row.findViewById(R.id.txttitle);
-            txttitle.setText(str[position]);
-            return row;
-        }
     }
 }
