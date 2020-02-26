@@ -336,13 +336,13 @@
                             android:textColor="@android:color/black"
                             android:textSize="18sp"/>
 
-                        <ImageView
+                        <ImageButton
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:src="@drawable/ic_call"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="5dp"
-                            android:id="@+id/callId"/>
+                            android:id="@+id/btncallId"/>
                     </RelativeLayout>
 
                 </LinearLayout>

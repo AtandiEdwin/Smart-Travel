@@ -3,9 +3,11 @@ package com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -18,13 +20,22 @@ import com.atandi.smarttravel.R;
 
 public class TrackerActivity extends AppCompatActivity {
 
-
-
     private static final int PERMISSIONS_REQUEST = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
+
+        String myplate = getIntent().getStringExtra("plates");
+        Toast.makeText(TrackerActivity.this, "your plate is" + myplate, Toast.LENGTH_LONG).show();
+
+        Intent mintent = new Intent("custom-message");
+        mintent.putExtra("number",myplate);
+        LocalBroadcastManager.getInstance(TrackerActivity.this).sendBroadcast(mintent);
+
+        Intent intent = new Intent(TrackerActivity.this, AdminMapsActivity.class);
+        startActivity(intent);
+
 
 //Check whether GPS tracking is enabled//
 
@@ -70,8 +81,6 @@ public class TrackerActivity extends AppCompatActivity {
 
                 startService(new Intent(this, TrackingService.class));
                 Toast.makeText(this, "GPS tracking enabled", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(TrackerActivity.this, AdminMapsActivity.class));
-
                 finish();
     }
 }

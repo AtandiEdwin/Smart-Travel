@@ -3,12 +3,14 @@ package com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     EditText loginEmailUserId,loginPasswordUserId;
     Button Btnlogin;
     TextView toRegister;
+    ProgressDialog progressDialog;
 
     private FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
@@ -65,6 +68,11 @@ public class AdminLoginActivity extends AppCompatActivity {
                 Btnlogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        progressDialog = new ProgressDialog(AdminLoginActivity.this);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.progress_layout);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                         final String mail = loginEmailUserId.getText().toString();
                         final String password = loginPasswordUserId.getText().toString();
 
@@ -73,12 +81,14 @@ public class AdminLoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if(task.isSuccessful()){
+                                progressDialog.dismiss();
                                 Intent intent =  new Intent(AdminLoginActivity.this, AdminMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
                             }
                             else{
+                                progressDialog.dismiss();
                                 Toast.makeText(AdminLoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                             }
 

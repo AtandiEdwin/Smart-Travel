@@ -3,7 +3,8 @@ package com.atandi.smarttravel.Constants;
 public class Links {
 
 
-    public static  final  String BASE_URL = "http://192.168.43.50/SmartTravel/";
+    public static  final  String BASE_URL = "http://192.168.172.142/SmartTravel/";
+//    public static  final  String BASE_URL = "http://smarttravel.epizy.com/SmartTravel/";
 
     public static  final  String FETCH_ROUTE= BASE_URL + "routes.php";
     public static  final  String FETCH_DETAILS= BASE_URL + "vehicles.php";

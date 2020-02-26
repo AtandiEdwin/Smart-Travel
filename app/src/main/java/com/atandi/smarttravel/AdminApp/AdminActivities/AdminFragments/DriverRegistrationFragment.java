@@ -1,6 +1,7 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.R;
 
 import org.json.JSONArray;
@@ -113,45 +115,61 @@ public class DriverRegistrationFragment extends Fragment {
     }
 
     private void Registeradriver() {
-        final String drnames = DRName.getText().toString();
-        final String drnumber = DRNumber.getText().toString();
+        if(DRSpinnerId.getSelectedItem()==null ){
+            MyBuilderClass myBuilderClass = new MyBuilderClass();
+            myBuilderClass.MyBuilder(getContext(),"All fields are required,,please ensure you have access to the sever");
+        }
+
+        else {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.progress_layout);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            final String drnames = DRName.getText().toString();
+            final String drnumber = DRNumber.getText().toString();
 //        final String drpic = DriverRPic.getText().toString();
-        final String drVehicle = DRSpinnerId.getSelectedItem().toString();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_DRIVER, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AlertDialog.Builder builder =new AlertDialog.Builder(getContext());
-                builder.setTitle("Smart Travel");
-                builder.setMessage("Driver has been registered");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            final String drVehicle = DRSpinnerId.getSelectedItem().toString();
+            if (drnames.isEmpty() || drnumber.isEmpty()) {
+                progressDialog.dismiss();
+                MyBuilderClass myBuilderClass = new MyBuilderClass();
+                myBuilderClass.MyBuilder(getContext(), "All fields are required");
+            } else {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_DRIVER, new Response.Listener<String>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DRName.setText("");
-                        DRNumber.setText("");
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Smart Travel");
+                        builder.setMessage("Driver has been registered");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DRName.setText("");
+                                DRNumber.setText("");
 //                        DriverRPic.setImageResource(R.drawable.ic_account);
-                    }
-                });
-                builder.create().show();
+                            }
+                        });
+                        builder.create().show();
 
-            }
-        },
-                new Response.ErrorListener() {
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        }) {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> DRMAP = new HashMap<>();
+                        DRMAP.put("driver_name", drnames);
+                        DRMAP.put("driver_number", drnumber);
+                        DRMAP.put("vehicle_plate", drVehicle);
+                        return DRMAP;
                     }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> DRMAP = new HashMap<>();
-                DRMAP.put("driver_name",drnames);
-                DRMAP.put("driver_number",drnumber);
-                DRMAP.put("vehicle_plate",drVehicle);
-                return DRMAP;
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                requestQueue.add(stringRequest);
             }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);
-
+        }
     }
 }

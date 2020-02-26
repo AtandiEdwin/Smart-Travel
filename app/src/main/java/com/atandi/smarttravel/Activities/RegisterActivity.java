@@ -3,6 +3,7 @@ package com.atandi.smarttravel.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -36,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     Button BtnRegister;
     EditText RpasswordUserId,RemailUserId,RuserNameId;
 
+    ProgressDialog progressDialog;
+
     private FirebaseAuth mAuth;
 
     @Override
@@ -64,6 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
 
           @Override
           public void onClick(View v) {
+              progressDialog = new ProgressDialog(RegisterActivity.this);
+              progressDialog.show();
+              progressDialog.setContentView(R.layout.progress_layout);
+              progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
               final String email = RemailUserId.getText().toString();
               final String password = RpasswordUserId.getText().toString();
               final String username = RuserNameId.getText().toString();
@@ -86,6 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
 
         reference.child(memail).setValue(user);
+        progressDialog.dismiss();
+        startActivity(new Intent(RegisterActivity.this,MainActivity.class));
+        finish();
 
     }
 }

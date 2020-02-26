@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.atandi.smarttravel.R;
 
@@ -19,6 +20,7 @@ public class DeleteAccountFragment extends Fragment {
         // Required empty public constructor
     }
 
+    Button btnDeleteAccount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,5 +31,6 @@ public class DeleteAccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnDeleteAccount  =view.findViewById(R.id.btnDeleteAccount);
     }
 }

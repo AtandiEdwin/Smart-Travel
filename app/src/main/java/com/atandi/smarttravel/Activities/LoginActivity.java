@@ -3,6 +3,7 @@ package com.atandi.smarttravel.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button Btnlogin;
     ImageButton BtnGoAdmin;
     TextView toRegister;
+    ProgressDialog progressDialog;
 
     private FirebaseAuth mAuth;
 
@@ -80,6 +82,10 @@ public class LoginActivity extends AppCompatActivity {
         Btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 final String mail = loginEmailUserId.getText().toString();
                 final String password = loginPasswordUserId.getText().toString();
 
@@ -92,7 +98,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         User user = dataSnapshot.child(mail).getValue(User.class);
 
+                        assert user != null;
                         if(user.getUserpassword().equals(password)){
+                            progressDialog.dismiss();
                             Intent intent =  new Intent(LoginActivity.this, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);

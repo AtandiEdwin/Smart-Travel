@@ -1,12 +1,16 @@
 package com.atandi.smarttravel.Fragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,8 @@ public class BookingFragment extends Fragment {
     private SummaryViewModel summaryViewModel;
     TextView plateNumberId,driverNameId,driverPhoneId,numberSeatsId,seatsRemainingId,tripcost;
     MyBuilderClass myBuilderClass = new MyBuilderClass();
+
+    ProgressDialog progressDialog;
 
     public BookingFragment() {
     }
@@ -77,6 +83,7 @@ public class BookingFragment extends Fragment {
         final EditText bookedSeatsId= view.findViewById(R.id.bookedSeatsId);
 
 
+        ImageButton btncallId = view.findViewById(R.id.btncallId);
         Button BtnBook = view.findViewById(R.id.bookNowId);
         plateNumberId = view.findViewById(R.id.plateNumberId);
         tripcost = view.findViewById(R.id.tripcost);
@@ -86,11 +93,27 @@ public class BookingFragment extends Fragment {
         driverPhoneId = view.findViewById(R.id.driverPhoneId);
         final EditText customerPhoneId = view.findViewById(R.id.customerPhoneId);
 
+        btncallId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String number = driverPhoneId.getText().toString();
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:"+number));
+                startActivity(callIntent);
+            }
+        });
+
         BtnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
                 if(bookedSeatsId.getText().toString().isEmpty() ||customerPhoneId.getText().toString().isEmpty()){
+                    progressDialog.dismiss();
 
                     myBuilderClass.MyBuilder(getContext()," please check that you have provided the required details");
                 }
@@ -98,10 +121,12 @@ public class BookingFragment extends Fragment {
                     List finaldetails  = new ArrayList();
                     int NSEAT = Integer.parseInt(bookedSeatsId.getText().toString());
                     int price = Integer.parseInt(tripcost.getText().toString());
-                    int totalprice = NSEAT*price;
+                    int totalprice = NSEAT * price;
 
-                    final String finalprice= String.valueOf(totalprice);
-                    finaldetails.add(finalprice);
+
+
+//                    final String finalprice= String.valueOf(totalprice);
+                    finaldetails.add(totalprice);
                     finaldetails.add(plateNumberId.getText());
                     finaldetails.add(bookedSeatsId.getText().toString());
                     finaldetails.add(customerPhoneId.getText().toString());
@@ -112,6 +137,7 @@ public class BookingFragment extends Fragment {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.nav_host_fragment,new SummaryFragment());
                     fragmentTransaction.commit();
+                    progressDialog.dismiss();
                 }
             }
         });

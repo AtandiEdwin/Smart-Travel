@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="match_parent"
     android:background="@color/colorAccentA"
     tools:context=".Activities.LoginActivity">
@@ -28,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vehicle Login"
+            android:text="@string/vehicle_specification"
             android:textSize="30sp"
             android:textColor="@android:color/black"/>
 
@@ -40,14 +41,6 @@
             android:hint="KKK 123K"
             android:textSize="20sp" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginStart="3dp"
-            android:background="@drawable/layout_shadow"
-            android:textSize="20sp"
-            android:hint="password"
-            android:id="@+id/vloginPasswordId"/>
 
         <Button
             android:layout_width="match_parent"
@@ -55,7 +48,7 @@
             android:textSize="20sp"
             android:id="@+id/Btnlogin"
             android:textColor="@android:color/white"
-            android:text="@string/login"
+            android:text="@string/proceed"
             android:background="@color/colorButtons"
             android:layout_margin="20dp"/>
 

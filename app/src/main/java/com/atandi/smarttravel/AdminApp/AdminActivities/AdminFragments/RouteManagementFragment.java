@@ -1,5 +1,6 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.atandi.smarttravel.Activities.RegisterActivity;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.R;
 
 import org.json.JSONArray;
@@ -51,6 +53,8 @@ public class RouteManagementFragment extends Fragment {
     EditText setVehicleRemainingSeats,newRouteName,newRouteCost;
     Spinner bookStatusCheck,setVehicleSpinner,routeSpinner;
 
+    ProgressDialog progressDialog;
+
     TextView newRoute;
     Button BtnManage,BtnUpdateRoute,BtnAddRoute;
 
@@ -70,6 +74,9 @@ public class RouteManagementFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        progressDialog = new ProgressDialog(getContext());
+
 
 //       spinners
         routeSpinner = view.findViewById(R.id.routeSpinner);
@@ -208,46 +215,60 @@ public class RouteManagementFragment extends Fragment {
         BtnUpdateRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String uRouteName = routeSpinner.getSelectedItem().toString();
-                final String uStatus = bookStatusCheck.getSelectedItem().toString();
-                final String uVehicle = setVehicleSpinner.getSelectedItem().toString();
-                final String uSeatsRemaining = setVehicleRemainingSeats.getText().toString();
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-                StringRequest updates = new StringRequest(Request.Method.POST, UPDATE_ROUTE_DETAILS, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                        alert.setTitle("Smart Travel");
-                        alert.setMessage(response);
-                        alert.setCancelable(false);
-                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        manage.setVisibility(View.GONE);
+
+                if (routeSpinner.getSelectedItem() == null || bookStatusCheck.getSelectedItem() == null || setVehicleSpinner.getSelectedItem() == null ||
+                        setVehicleRemainingSeats.getText() == null) {
+                    progressDialog.dismiss();
+                    MyBuilderClass myBuilderClass = new MyBuilderClass();
+                    myBuilderClass.MyBuilder(getContext(),"All fields are required,,please ensure you have access to the sever");
+
+                } else {
+                    final String uRouteName = routeSpinner.getSelectedItem().toString();
+                    final String uStatus = bookStatusCheck.getSelectedItem().toString();
+                    final String uVehicle = setVehicleSpinner.getSelectedItem().toString();
+                    final String uSeatsRemaining = setVehicleRemainingSeats.getText().toString();
+
+                    StringRequest updates = new StringRequest(Request.Method.POST, UPDATE_ROUTE_DETAILS, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            progressDialog.dismiss();
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setTitle("Smart Travel");
+                            alert.setMessage(response);
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            manage.setVisibility(View.GONE);
+                                        }
                                     }
+                            );
+                            alert.show();
+
+                        }
+                    },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
                                 }
-                        );
-                        alert.show();
-
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> updMap = new HashMap<>();
-                        updMap.put("route_name",uRouteName);
-                        updMap.put("status",uStatus);
-                        updMap.put("vehicle",uVehicle);
-                        updMap.put("seats",uSeatsRemaining);
-                        return updMap;
-                    }
-                };
-                requestQueue.add(updates);
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> updMap = new HashMap<>();
+                            updMap.put("route_name", uRouteName);
+                            updMap.put("status", uStatus);
+                            updMap.put("vehicle", uVehicle);
+                            updMap.put("seats", uSeatsRemaining);
+                            return updMap;
+                        }
+                    };
+                    requestQueue.add(updates);
+                }
             }
         });
 
@@ -257,44 +278,58 @@ public class RouteManagementFragment extends Fragment {
         BtnAddRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+
                 final String routenames = newRouteName.getText().toString();
                 final String routecost = newRouteCost.getText().toString();
 
-                StringRequest addroute = new StringRequest(Request.Method.POST, ADD_ROUTE_DETAILS, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                        alert.setTitle("Smart Travel");
-                        alert.setMessage(response);
-                        alert.setCancelable(false);
-                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        newRouteName.setText("");
-                                        newRouteCost.setText("");
-                                        NewAddRoute.setVisibility(View.GONE);
+
+                if (routenames.isEmpty() || routecost.isEmpty()) {
+                    progressDialog.dismiss();
+                    MyBuilderClass myBuilderClass = new MyBuilderClass();
+                    myBuilderClass.MyBuilder(getContext(),"All fields are required");
+
+                } else {
+                    StringRequest addroute = new StringRequest(Request.Method.POST, ADD_ROUTE_DETAILS, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            progressDialog.dismiss();
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setTitle("Smart Travel");
+                            alert.setMessage(response);
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            newRouteName.setText("");
+                                            newRouteCost.setText("");
+                                            NewAddRoute.setVisibility(View.GONE);
+                                        }
                                     }
+                            );
+                            alert.show();
+
+                        }
+                    },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
                                 }
-                        );
-                        alert.show();
-
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> newRouteMap = new HashMap<>();
-                        newRouteMap.put("routes_name",routenames);
-                        newRouteMap.put("route_cost",routecost);
-                        return newRouteMap;
-                    }
-                };
-                requestQueue.add(addroute);
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> newRouteMap = new HashMap<>();
+                            newRouteMap.put("routes_name", routenames);
+                            newRouteMap.put("route_cost", routecost);
+                            return newRouteMap;
+                        }
+                    };
+                    requestQueue.add(addroute);
+                }
             }
         });
 

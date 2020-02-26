@@ -1,9 +1,11 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.TryModel;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.Vehicle;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.atandi.smarttravel.Constants.Links.FETCH_ROUTE;
 import static com.atandi.smarttravel.Constants.Links.REGISTER_VEHICLE;
 
@@ -56,6 +60,10 @@ public class VehicleRegistrationFragment extends Fragment {
     Button BtnVRegister;
     List<String> mRoute;
     TextView selctedroute;
+
+    ProgressDialog progressDialog;
+
+    MyBuilderClass myBuilderClass = new MyBuilderClass();
 
     @Nullable
     @Override
@@ -85,6 +93,7 @@ public class VehicleRegistrationFragment extends Fragment {
                 JSONArray jsonArray = null;
 
                 try {
+
                     jsonArray = new JSONArray(response);
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -120,6 +129,10 @@ public class VehicleRegistrationFragment extends Fragment {
         BtnVRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog= new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 RegisterVehicle();
             }
         });
@@ -132,54 +145,67 @@ public class VehicleRegistrationFragment extends Fragment {
 
 
     private void RegisterVehicle() {
-        final String plates = VRVehicleNumber.getText().toString();
-        final String owner = VRVOwnerName.getText().toString();
-        final String phones = VRVOwnerNumber.getText().toString();
-        final String seats = VRVSeats.getText().toString();
-        final String route = VRVSpinnerId.getSelectedItem().toString();
+        if(VRVSpinnerId.getSelectedItem()==null){
+            progressDialog.dismiss();
+            myBuilderClass.MyBuilder(getContext(),"sorry seems you don't have access to the server.Please consult the administrators");
+        }
+        else {
+            final String plates = VRVehicleNumber.getText().toString().toUpperCase();
+            final String owner = VRVOwnerName.getText().toString();
+            final String phones = VRVOwnerNumber.getText().toString();
+            final String seats = VRVSeats.getText().toString();
+            final String route = VRVSpinnerId.getSelectedItem().toString();
 
-        Vehicle vehicle = new Vehicle(plates,plates);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Vehicle");
-        reference.child(plates).setValue(vehicle);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_VEHICLE, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AlertDialog.Builder builder =new AlertDialog.Builder(getContext());
-                builder.setTitle("Smart Travel");
-                builder.setMessage("Vehicle has been registered");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        VRVehicleNumber.setText("");
-                        VRVOwnerName.setText("");
-                        VRVOwnerNumber.setText("");
-                        VRVpicId.setImageResource(R.drawable.ic_car);
-                        VRVSeats.setText("");
-                    }
-                });
-                builder.create().show();
-
+            if(owner.isEmpty() || phones.isEmpty() || seats.isEmpty()|| plates.isEmpty()){
+                progressDialog.dismiss();
+                myBuilderClass.MyBuilder(getContext(),"All fields are required");
             }
-        },
-                new Response.ErrorListener() {
+            else {
+                Vehicle vehicle = new Vehicle(plates, plates);
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Vehicle");
+                reference.child(plates).setValue(vehicle);
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_VEHICLE, new Response.Listener<String>() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Smart Travel");
+                        builder.setMessage("Vehicle has been registered");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                VRVehicleNumber.setText("");
+                                VRVOwnerName.setText("");
+                                VRVOwnerNumber.setText("");
+                                VRVpicId.setImageResource(R.drawable.ic_car);
+                                VRVSeats.setText("");
+                            }
+                        });
+                        builder.create().show();
+
                     }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> vMap = new HashMap<>();
-                vMap.put("vehicle_plate", plates);
-                vMap.put("vehicle_owner", owner);
-                vMap.put("owner_phone", phones);
-                vMap.put("vehicle_number_of_seats", seats);
-                vMap.put("routeName", route);
-                return vMap;
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> vMap = new HashMap<>();
+                        vMap.put("vehicle_plate", plates);
+                        vMap.put("vehicle_owner", owner);
+                        vMap.put("owner_phone", phones);
+                        vMap.put("vehicle_number_of_seats", seats);
+                        vMap.put("routeName", route);
+                        return vMap;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                requestQueue.add(stringRequest);
             }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);
+        }
     }
 
     public class mySelectedListener implements AdapterView.OnItemSelectedListener {

@@ -84,4 +84,9 @@
     <string name="change_password_text">You are about to change your password. Changing your password will require you to put your current password and anew password to effectively change it.</string>
 
     <string name="delete_account_text">Deleting your account deltes all your information from smart travel including your trips summary</string>
+    <string name="change">CHANGE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="vehicle_specification">Vehicle Specification</string>
+    <string name="proceed">PROCEED</string>
+    <string name="loading">Loading...</string>
 </resources>

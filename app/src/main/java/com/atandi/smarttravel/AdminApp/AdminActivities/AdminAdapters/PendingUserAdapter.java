@@ -84,8 +84,6 @@ public class PendingUserAdapter extends RecyclerView.Adapter<PendingUserAdapter.
                                 public void onResponse(String response) {
                                     holder.itemView.setVisibility(View.GONE);
                                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0,0));
-                                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-
                                 }
                             },
                                     new Response.ErrorListener() {
@@ -94,7 +92,7 @@ public class PendingUserAdapter extends RecyclerView.Adapter<PendingUserAdapter.
                                         }
                                     }){
                                 @Override
-                                protected Map<String, String> getParams() throws AuthFailureError {
+                                protected Map<String, String> getParams() {
                                     Map<String,String> map = new HashMap<>();
                                     map.put("status",status);
                                     map.put("phone",uphone);

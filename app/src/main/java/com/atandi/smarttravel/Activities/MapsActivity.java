@@ -52,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final Double[] longitu = {37.9083};
         final String path = getString(R.string.firebase_path);
 
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Vehicle").child("kbh 283v").child(path);// meant to access the firebase database
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Vehicle").child("KBB 234n").child(path);// meant to access the firebase database
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

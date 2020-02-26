@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.atandi.smarttravel.R;
 
@@ -20,6 +22,8 @@ public class ChangePasswordFragment extends Fragment {
         // Required empty public constructor
     }
 
+    EditText currentPassword,newPassword,confirmPassword;
+    Button btnChangePasswordCancel,btnChangePassword;
 
 
     @Override

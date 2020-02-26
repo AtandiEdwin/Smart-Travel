@@ -1,5 +1,6 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAdapters.PendingUserAdapter;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.PendingUserModel;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.R;
 
 import org.json.JSONArray;
@@ -48,6 +50,7 @@ public class BookedCustomersFragment extends Fragment {
     RecyclerView pendingUserRecycler;
     List<String> vehiclelist,routelist;
     List<PendingUserModel> mUser;
+    ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -146,10 +149,15 @@ public class BookedCustomersFragment extends Fragment {
             public void onClick(View v) {
                 if(pendingUserRecycler.getVisibility()==View.GONE){
                     pendingUserRecycler.setVisibility(View.VISIBLE);
+
                 }
                 else {
                     pendingUserRecycler.setVisibility(View.GONE);
                 }
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 loadUsers();
 
             }
@@ -157,52 +165,60 @@ public class BookedCustomersFragment extends Fragment {
     }
 
     private void loadUsers() {
-       final String plate_number = pendingUserSpinner.getSelectedItem().toString();
-       final  String routename = pendingUserRouteSpinner.getSelectedItem().toString();
-        final StringRequest pstringRequest = new StringRequest(Request.Method.POST, FETCH_PENDING_USERS, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONArray jsonArray;
-                mUser.clear();
-                try {
-                    jsonArray = new JSONArray(response);
+        if(pendingUserSpinner.getSelectedItem()==null || pendingUserRouteSpinner.getSelectedItem()==null ){
+            MyBuilderClass myBuilderClass = new MyBuilderClass();
+            myBuilderClass.MyBuilder(getContext(),"sorry seems you don't have access to the server.Please consult the administrators");
+            progressDialog.dismiss();
+        }
+        else{
+            final String plate_number = pendingUserSpinner.getSelectedItem().toString();
+            final  String routename = pendingUserRouteSpinner.getSelectedItem().toString();
+            final StringRequest pstringRequest = new StringRequest(Request.Method.POST, FETCH_PENDING_USERS, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    progressDialog.dismiss();
+                    JSONArray jsonArray;
+                    mUser.clear();
+                    try {
+                        jsonArray = new JSONArray(response);
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
 
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String phones = jsonObject.getString("user_phone");
-                        String pickpoint = jsonObject.getString("pickpoint");
-                        PendingUserModel pendingUserModel = new PendingUserModel(phones,pickpoint);
-                        mUser.add(pendingUserModel);
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String phones = jsonObject.getString("user_phone");
+                            String pickpoint = jsonObject.getString("pickpoint");
+                            PendingUserModel pendingUserModel = new PendingUserModel(phones,pickpoint);
+                            mUser.add(pendingUserModel);
+                        }
+                        PendingUserAdapter adapter = new PendingUserAdapter(getContext(),mUser);
+                        pendingUserRecycler.setAdapter(adapter);
+                        pendingUserRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    PendingUserAdapter adapter = new PendingUserAdapter(getContext(),mUser);
-                    pendingUserRecycler.setAdapter(adapter);
-                    pendingUserRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-
+                        }
                     }
+            ){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String,String> map = new HashMap<>();
+                    map.put("routename",routename);
+                    map.put("plate_number",plate_number);
+                    return map;
                 }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("routename",routename);
-                map.put("plate_number",plate_number);
-                return map;
-            }
-        };
+            };
 
-        RequestQueue mrequestQueue = Volley.newRequestQueue(getContext());
-        mrequestQueue.add(pstringRequest);
+            RequestQueue mrequestQueue = Volley.newRequestQueue(getContext());
+            mrequestQueue.add(pstringRequest);
+        }
+
 
     }
 }

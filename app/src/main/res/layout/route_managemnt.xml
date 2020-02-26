@@ -278,6 +278,7 @@
                             android:gravity="center"
                             android:background="@drawable/layout_shadow"
                             android:layout_height="60dp"
+                            android:inputType="number"
                             android:hint="@string/set_cost"
                             android:id="@+id/newRouteCost"/>
                     </LinearLayout>

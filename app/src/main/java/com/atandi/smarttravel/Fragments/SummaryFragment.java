@@ -1,6 +1,7 @@
 package com.atandi.smarttravel.Fragments;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -102,6 +103,10 @@ public class SummaryFragment extends Fragment {
         BtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 final String route = endRouteId.getText().toString();
                 final String pickpoint = endPickId.getText().toString();
                 final String seats_booked = endSeatsId.getText().toString();
@@ -112,6 +117,7 @@ public class SummaryFragment extends Fragment {
                 StringRequest newStringRequest = new StringRequest(Request.Method.POST, SAVE_DETAILS, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                        alert.setTitle("Smart Travel");
                        alert.setMessage(response);

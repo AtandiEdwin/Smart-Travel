@@ -16,7 +16,7 @@
         android:textSize="24sp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@android:color/holo_orange_dark"/>
 
     <TextView
         android:layout_width="match_parent"

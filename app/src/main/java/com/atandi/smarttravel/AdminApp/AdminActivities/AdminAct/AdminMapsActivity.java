@@ -47,12 +47,11 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         mMap = googleMap;
 
         mMap = googleMap;
-//first we initialize the location latitudes and longitudes as doubles since they can contain decimals
         final Double[] latitu = {0.1769};
         final Double[] longitu = {37.9083};
         final String path = getString(R.string.firebase_path);
 
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Vehicle").child("kbh 283v").child(path);// meant to access the firebase database
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Vehicle").child("KBB 234n").child(path);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

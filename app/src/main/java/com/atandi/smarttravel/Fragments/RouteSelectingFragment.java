@@ -1,5 +1,6 @@
 package com.atandi.smarttravel.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -166,8 +167,6 @@ public class RouteSelectingFragment extends Fragment {
         requestQueue.add(stringRequest);
 
 
-
-
         RouteEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,11 +186,16 @@ public class RouteSelectingFragment extends Fragment {
         BtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog  progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 final String ROUTE =RouteEdit.getText().toString();
                 final String PICKPOINT = pick.getText().toString();
 
                 if(ROUTE.isEmpty()){
+                    progressDialog.dismiss();
                     AlertDialog.Builder alert  = new AlertDialog.Builder(getContext());
                     alert.setTitle("Smart Travel");
                     alert.setMessage("Please select the route you are travelling");
@@ -207,40 +211,59 @@ public class RouteSelectingFragment extends Fragment {
                     StringRequest myrequest = new StringRequest(Request.Method.POST, FETCH_DETAILS, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            JSONArray jsonArray ;
-                            try {
-                                jsonArray = new JSONArray(response);
-                                for(int i= 0; i<jsonArray.length(); i++){
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            progressDialog.dismiss();
+                            if(response.isEmpty()){
+                                AlertDialog.Builder alert  = new AlertDialog.Builder(getContext());
+                                alert.setTitle("Smart Travel");
+                                alert.setMessage("The route you chose has no vehicle to book at this moment");
+                                alert.setCancelable(true);
+                                alert.show();
+                            }
+                            else{
+                                JSONArray jsonArray ;
+                                try {
+                                    jsonArray = new JSONArray(response);
 
-                                    String vehicleplate = jsonObject.getString("vehicle_plate");
-                                    String vehiclepic = jsonObject.getString("vehicle_pic");
-                                    String vehicleseats = jsonObject.getString("vehicle_number_of_seats");
-                                    String seatsremaining = jsonObject.getString("seats_remaining");
-                                    String cost = jsonObject.getString("cost");
-                                    String drivername = jsonObject.getString("driver_name");
-                                    String drivernumber = jsonObject.getString("driver_number");
-                                    String driverpic = jsonObject.getString("driver_pic");
+                                    for(int i= 0; i<jsonArray.length(); i++){
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                                    List mlist= new ArrayList();
-                                    mlist.add(vehicleplate);
-                                    mlist.add(vehiclepic);
-                                    mlist.add(vehicleseats);
-                                    mlist.add(seatsremaining);
-                                    mlist.add(cost);
-                                    mlist.add(drivername);
-                                    mlist.add(drivernumber);
-                                    mlist.add(driverpic);
+                                        String vehicleplate = jsonObject.getString("vehicle_plate");
+                                        String vehiclepic = jsonObject.getString("vehicle_pic");
+                                        String vehicleseats = jsonObject.getString("vehicle_number_of_seats");
+                                        String seatsremaining = jsonObject.getString("seats_remaining");
+                                        String cost = jsonObject.getString("cost");
+                                        String drivername = jsonObject.getString("driver_name");
+                                        String drivernumber = jsonObject.getString("driver_number");
+                                        String driverpic = jsonObject.getString("driver_pic");
 
-                                    model.setMlist(mlist);
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.nav_host_fragment,new BookingFragment());
-                                    fragmentTransaction.addToBackStack(null);
-                                    fragmentTransaction.commit();
+                                        List mlist= new ArrayList();
+                                        mlist.add(vehicleplate);
+                                        mlist.add(vehiclepic);
+                                        mlist.add(vehicleseats);
+                                        mlist.add(seatsremaining);
+                                        mlist.add(cost);
+                                        mlist.add(drivername);
+                                        mlist.add(drivernumber);
+                                        mlist.add(driverpic);
+
+                                        model.setMlist(mlist);
+                                        FragmentManager fragmentManager = getFragmentManager();
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        fragmentTransaction.replace(R.id.nav_host_fragment,new BookingFragment());
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+                                        progressDialog.dismiss();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    progressDialog.dismiss();
+                                    AlertDialog.Builder alert  = new AlertDialog.Builder(getContext());
+                                    alert.setTitle("Smart Travel");
+                                    alert.setMessage("our servers are down at the moment please try again later");
+                                    alert.setCancelable(true);
+                                    alert.show();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
                             }
 
                         }

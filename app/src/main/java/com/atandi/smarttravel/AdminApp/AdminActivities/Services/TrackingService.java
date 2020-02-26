@@ -10,11 +10,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
+import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.Vehicle;
 import com.atandi.smarttravel.R;
@@ -47,8 +52,20 @@ public class TrackingService extends Service {
         public void onCreate() {
             super.onCreate();
             buildNotification();
-            requestLocationUpdates();
+            LocalBroadcastManager.getInstance(TrackingService.this).registerReceiver(mMessageReceiver,new IntentFilter("custom-message"));
+//            requestLocationUpdates();
         }
+
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String finalplate = intent.getStringExtra("number");
+            requestLocationUpdates(finalplate);
+            Toast.makeText(context, "ok" +finalplate, Toast.LENGTH_SHORT).show();
+
+        }
+    };
 
     //Create the persistent notification//
 
@@ -81,7 +98,7 @@ public class TrackingService extends Service {
 
 
 
-        private void requestLocationUpdates() {
+        private void requestLocationUpdates(final String finalplate) {
             LocationRequest request = new LocationRequest();
             request.setInterval(10000);
 
@@ -96,11 +113,15 @@ public class TrackingService extends Service {
                 client.requestLocationUpdates(request, new LocationCallback() {
                     @Override
                     public void onLocationResult(final LocationResult locationResult) {
-
-                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Vehicle").child("kbh 283v").child(path);
-                        Location location = locationResult.getLastLocation();
-                        if (location != null) {
-                            ref.setValue(location);
+                        if(!finalplate.isEmpty()) {
+                            final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Vehicle").child(finalplate).child(path);
+                            Location location = locationResult.getLastLocation();
+                            if (location != null) {
+                                ref.setValue(location);
+                            }
+                        }
+                        else{
+                            Toast.makeText(TrackingService.this, "plate is missing", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, null);

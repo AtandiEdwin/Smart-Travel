@@ -1,6 +1,7 @@
 package com.atandi.smarttravel.Fragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -110,6 +111,10 @@ public class TripsFragment extends Fragment{
         btnload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 if(dismissTxt.getVisibility()==View.VISIBLE){
                     dismissTxt.setVisibility(View.GONE);
@@ -120,6 +125,7 @@ public class TripsFragment extends Fragment{
                         final String TODATE = toDates.getText().toString();
 
                         if(FROMDATE.isEmpty() && TODATE.isEmpty()){
+                            progressDialog.dismiss();
                             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                             alert.setTitle("Smart Travel");
                             alert.setMessage("Please select the dates");
@@ -139,6 +145,7 @@ public class TripsFragment extends Fragment{
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, FETCH_TRIPS, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
+                                    progressDialog.dismiss();
 
                                     try {
                                         JSONArray jsonArray = new JSONArray(response);
