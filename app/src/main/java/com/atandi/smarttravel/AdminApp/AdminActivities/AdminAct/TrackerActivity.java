@@ -27,15 +27,10 @@ public class TrackerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tracker);
 
         String myplate = getIntent().getStringExtra("plates");
-        Toast.makeText(TrackerActivity.this, "your plate is" + myplate, Toast.LENGTH_LONG).show();
 
         Intent mintent = new Intent("custom-message");
         mintent.putExtra("number",myplate);
         LocalBroadcastManager.getInstance(TrackerActivity.this).sendBroadcast(mintent);
-
-        Intent intent = new Intent(TrackerActivity.this, AdminMapsActivity.class);
-        startActivity(intent);
-
 
 //Check whether GPS tracking is enabled//
 

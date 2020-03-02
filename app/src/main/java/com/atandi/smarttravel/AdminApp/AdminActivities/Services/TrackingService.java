@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminModels.Vehicle;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -62,8 +63,6 @@ public class TrackingService extends Service {
         public void onReceive(Context context, Intent intent) {
             final String finalplate = intent.getStringExtra("number");
             requestLocationUpdates(finalplate);
-            Toast.makeText(context, "ok" +finalplate, Toast.LENGTH_SHORT).show();
-
         }
     };
 
@@ -121,7 +120,8 @@ public class TrackingService extends Service {
                             }
                         }
                         else{
-                            Toast.makeText(TrackingService.this, "plate is missing", Toast.LENGTH_SHORT).show();
+                            MyBuilderClass myBuilderClass = new MyBuilderClass();
+                            myBuilderClass.MyBuilder(TrackingService.this,"server is unable to recognize the plate number");
                         }
                     }
                 }, null);

@@ -33,6 +33,12 @@ public class VehicleActivity extends AppCompatActivity {
     private static String plate= "";
 
     @Override
+    public void onBackPressed() {
+        startActivity(new Intent(VehicleActivity.this,AdminMainActivity.class));
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle);
@@ -90,5 +96,7 @@ public class VehicleActivity extends AppCompatActivity {
                             }
                         }
                 });
+
+
             }
 }

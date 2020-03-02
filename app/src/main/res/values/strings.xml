@@ -37,7 +37,7 @@
     <string name="booked_customers">Booked Customers</string>
     <string name="vehicle_registration">Vehicle Registration</string>
     <string name="driver_registration">Driver Registration</string>
-    <string name="user_notification">User Notification</string>
+    <string name="user_notification">all your notifications will be displayed here as soon as you view them for reference</string>
     <string name="select_route">Select Route</string>
     <string name="manage">Manage</string>
     <string name="route">route</string>
@@ -81,12 +81,25 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_manage_account">ManageAccountActivity</string>
 
-    <string name="change_password_text">You are about to change your password. Changing your password will require you to put your current password and anew password to effectively change it.</string>
+    <string name="change_password_text">You are about to change your password. Changing your password will require you to put
+        your current password and anew password to effectively change it.</string>
 
-    <string name="delete_account_text">Deleting your account deltes all your information from smart travel including your trips summary</string>
+    <string name="delete_account_text">Deleting your account deletes all your information from smart travel including your trips summary</string>
     <string name="change">CHANGE</string>
     <string name="cancel">CANCEL</string>
     <string name="vehicle_specification">Vehicle Specification</string>
     <string name="proceed">PROCEED</string>
     <string name="loading">Loading...</string>
+    <string name="map_view">Map View</string>
+    <string name="click_to_add_new_pick_point">Click to add new pick point</string>
+    <string name="pick_name">Pick Name :</string>
+    <string name="add_pick">ADD PICK POINT</string>
+    <string name="enter_pick_point_details">Enter Pick point Details</string>
+
+    <string name="customer">Customer</string>
+    <string name="admin">Administrator</string>
+    <string name="currently_no_customer_has_booked_this_vehicle_to_the_specified_route">Dear administrator it seems no customer has booked this vehicle
+        to the specified route</string>
+    <string name="no_trip">Dear customer we are sorry you have not made any trip with us between the specified days.
+        Please keep travelling with us to enjoy our great services</string>
 </resources>

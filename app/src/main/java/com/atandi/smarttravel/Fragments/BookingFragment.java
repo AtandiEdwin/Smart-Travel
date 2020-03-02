@@ -2,7 +2,10 @@ package com.atandi.smarttravel.Fragments;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.Models.DetailsViewModel;
@@ -36,6 +40,8 @@ public class BookingFragment extends Fragment {
     private SummaryViewModel summaryViewModel;
     TextView plateNumberId,driverNameId,driverPhoneId,numberSeatsId,seatsRemainingId,tripcost;
     MyBuilderClass myBuilderClass = new MyBuilderClass();
+
+    EditText customerPhoneId;
 
     ProgressDialog progressDialog;
 
@@ -82,6 +88,8 @@ public class BookingFragment extends Fragment {
 
         final EditText bookedSeatsId= view.findViewById(R.id.bookedSeatsId);
 
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(MyNumberReceiver,new IntentFilter("Number"));
+
 
         ImageButton btncallId = view.findViewById(R.id.btncallId);
         Button BtnBook = view.findViewById(R.id.bookNowId);
@@ -91,7 +99,7 @@ public class BookingFragment extends Fragment {
         seatsRemainingId = view.findViewById(R.id.seatsRemainingId);
         driverNameId = view.findViewById(R.id.driverNameId);
         driverPhoneId = view.findViewById(R.id.driverPhoneId);
-        final EditText customerPhoneId = view.findViewById(R.id.customerPhoneId);
+        customerPhoneId= view.findViewById(R.id.customerPhoneId);
 
         btncallId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,4 +150,18 @@ public class BookingFragment extends Fragment {
             }
         });
     }
+
+    public BroadcastReceiver MyNumberReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String userNumber = intent.getStringExtra("number");
+            if(userNumber==null){
+                customerPhoneId.setText("");
+            }
+            else{
+                customerPhoneId.setText(userNumber);
+            }
+
+        }
+    };
 }

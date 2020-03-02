@@ -82,8 +82,10 @@ public class AdminLoginActivity extends AppCompatActivity {
 
                             if(task.isSuccessful()){
                                 progressDialog.dismiss();
+                                String userMail = mail;
                                 Intent intent =  new Intent(AdminLoginActivity.this, AdminMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("User",userMail);
                                 startActivity(intent);
                                 finish();
                             }

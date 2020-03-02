@@ -3,9 +3,12 @@ package com.atandi.smarttravel;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivit
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
     private AdapterViewFlipper adapterViewFlipper;
+    TextView userNames;
     private static final String[] TEXT = {"vbooking","trips","tracker","notification",
     "account","info"
     };
@@ -45,6 +49,17 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 //        FlipperAdapter adapter = new FlipperAdapter(this,IMAGES,TEXT);
 //        adapterViewFlipper.setAdapter(adapter);
 //        adapterViewFlipper.setAutoStart(true);
+         userNames= findViewById(R.id.userName);
+        LocalBroadcastManager.getInstance(this).registerReceiver(MyName,new IntentFilter("Number"));
+
+
+
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("name");
+
+        if(userName==null){
+            userNames.setText(R.string.customer);
+        }
 
         LinearLayout VehicleLinear = findViewById(R.id.linearVehicleBooking);
         LinearLayout TripsLinear = findViewById(R.id.linearTrips);
@@ -61,6 +76,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         InfoLinear.setOnClickListener(this);
 
     }
+
+    public BroadcastReceiver MyName = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String mname  =intent.getStringExtra("name");
+            userNames.setText(mname);
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -88,10 +111,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         if(v.getId()==R.id.goId){
             startActivity(new Intent(MainActivity.this, AdminMainActivity.class));
+            finish();
         }
         else if(v.getId()==R.id.linearTracker){
             startActivity(new Intent(MainActivity.this, MapsActivity.class));
-
         }
 
     }

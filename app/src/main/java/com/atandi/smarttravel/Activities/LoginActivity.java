@@ -2,6 +2,7 @@ package com.atandi.smarttravel.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminLoginActivity;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.MainActivity;
 import com.atandi.smarttravel.Models.User;
 import com.atandi.smarttravel.R;
@@ -44,8 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+
     }
 
     @Override
@@ -90,62 +91,53 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = loginPasswordUserId.getText().toString();
 
 
+                if (mail.isEmpty() || password.isEmpty()) {
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    progressDialog.dismiss();
+                    MyBuilderClass myBuilderClass = new MyBuilderClass();
+                    myBuilderClass.MyBuilder(LoginActivity.this,"All fields are required");
+                } else {
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        User user = dataSnapshot.child(mail).getValue(User.class);
+                            User user = dataSnapshot.child(mail).getValue(User.class);
 
-                        assert user != null;
-                        if(user.getUserpassword().equals(password)){
-                            progressDialog.dismiss();
-                            Intent intent =  new Intent(LoginActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
+                            if (user == null) {
+                                progressDialog.dismiss();
+                                Toast.makeText(LoginActivity.this, "Account doesn't exist", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (user.getUserpassword().equals(password)) {
+                                    progressDialog.dismiss();
+                                    String userName = user.getUsername();
+
+                                    //bradcast user phone number
+                                    Intent broad = new Intent("Number");
+                                    broad.putExtra("number", mail);
+                                    broad.putExtra("name", userName);
+                                    LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(broad);
+
+                                    //pass user name to main page
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
                         }
-                        else{
-                            Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
+                    });
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-//                if(TextUtils.isEmpty(mail)|| TextUtils.isEmpty(password)){
-//                    Toast.makeText(LoginActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
-//                }
-//                else if(mail.equals(myemail[0]) && password.equals(mypassword[0])){
-//                    Toast.makeText(LoginActivity.this, "okay", Toast.LENGTH_SHORT).show();
-//                }
-//                else{
-//                    mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                            if(task.isComplete()){
-//
-//                            }
-//                            else{
-//
-//                            }
-//
-//                        }
-//                    });
-//
-//                }
-
+                }
             }
         });
-    }
-
-    private void updateUI(FirebaseUser user) {
-
     }
 }

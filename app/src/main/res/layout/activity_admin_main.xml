@@ -51,9 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-
-                android:text="edwin"
-                android:id="@+id/userName"
+                android:id="@+id/userMail"
                 android:textColor="@android:color/white"
                 android:gravity="center"
                 android:textSize="15sp" />
@@ -96,179 +94,200 @@
                         android:layout_height="wrap_content"
                         android:descendantFocusability="blocksDescendants"
                         android:orientation="vertical">
-                        <LinearLayout
-                            android:id="@+id/linearRouteManager"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/layout_shadow"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:background="@drawable/icon_background"
-                                android:layout_width="50dp"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="30dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_car"/>
-                            <TextView
-                                android:gravity="center"
-                                android:textColor="@android:color/black"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="10dp"
-                                android:layout_height="wrap_content"
-                                android:text="@string/route_management"
-                                android:textSize="24sp"/>
-
-                        </LinearLayout>
-
 
                         <LinearLayout
-                            android:background="@drawable/layout_shadow"
-                            android:id="@+id/linearActiveTracking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_marginStart="30dp"
-                                android:layout_gravity="center"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_active"/>
-
-                            <TextView
-                                android:layout_marginTop="2dp"
-                                android:gravity="center"
-                                android:layout_gravity="center"
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:id="@+id/linearRouteManager"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:textColor="@android:color/black"
-                                android:text="@string/active_tracking"
-                                android:textSize="24sp"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:background="@drawable/layout_shadow"
-                            android:id="@+id/linearBookedCustomer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_marginStart="30dp"
-                                android:layout_width="50dp"
+                                android:background="@drawable/layout_shadow"
                                 android:layout_gravity="center"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_booked"/>
-                            <TextView
-                                android:layout_marginTop="2dp"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:layout_marginStart="10dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:background="@drawable/icon_background"
+                                    android:layout_width="50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_car"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:textColor="@android:color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/route_management"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:background="@drawable/layout_shadow"
+                                android:id="@+id/linearBookedCustomer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@android:color/black"
-                                android:text="@string/booked_customers"
-                                android:textSize="24sp"/>
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:background="@drawable/layout_shadow"
-                            android:id="@+id/linearVehicleRegistration"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_marginStart="30dp"
-                                android:layout_width="50dp"
                                 android:layout_gravity="center"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_vehicle"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/black"
-                                android:text="@string/vehicle_registration"
-                                android:textSize="24sp"/>
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_booked"/>
+                                <TextView
+                                    android:layout_marginTop="2dp"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@android:color/black"
+                                    android:text="@string/booked_customers"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:background="@drawable/layout_shadow"
-                            android:id="@+id/linearDriverRegistration"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_marginStart="30dp"
-                                android:layout_gravity="center"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_driver"/>
 
-                            <TextView
+                            <LinearLayout
+                                android:background="@drawable/layout_shadow"
+                                android:id="@+id/linearVehicleRegistration"
+                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:gravity="center"
                                 android:layout_gravity="center"
-                                android:text="@string/driver_registration"
-                                android:textColor="@android:color/black"
-                                android:textSize="24sp" />
+                                android:orientation="vertical">
 
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_vehicle"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@android:color/black"
+                                    android:text="@string/vehicle_registration"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:background="@drawable/layout_shadow"
+                                android:id="@+id/linearDriverRegistration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_driver"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:text="@string/driver_registration"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="15sp" />
+
+                            </LinearLayout>
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearUserNotification"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/layout_shadow"
-                            android:layout_gravity="center"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_marginStart="30dp"
-                                android:layout_gravity="center"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_start"/>
 
-                            <TextView
-                                android:layout_gravity="center"
-                                android:gravity="center"
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:id="@+id/linearUserNotification"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:textColor="@android:color/black"
-                                android:text="@string/start_tracker"
-                                android:textSize="24sp"/>
+                                android:background="@drawable/layout_shadow"
+                                android:layout_gravity="center"
+                                android:orientation="vertical">
 
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_start"/>
+
+                                <TextView
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:textColor="@android:color/black"
+                                    android:text="@string/start_tracker"
+                                    android:textSize="15sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:visibility="invisible"
+                                android:id="@+id/linearActiveTracking"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:background="@drawable/layout_shadow"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_active" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="2dp"
+                                    android:gravity="center"
+                                    android:text="@string/map_view"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
                         </LinearLayout>
-                        <RelativeLayout
+
+                        <Button
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Logout"
-                                android:layout_alignParentEnd="true"
-                                android:id="@+id/AdminLogout"/>
-                        </RelativeLayout>
+                            android:layout_height="wrap_content"
+                            android:text="Logout"
+                            android:layout_margin="20dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:background="@color/colorButtons"
+                            android:id="@+id/AdminLogout"/>
+
                     </LinearLayout>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

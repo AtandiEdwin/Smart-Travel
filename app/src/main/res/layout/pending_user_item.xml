@@ -7,36 +7,49 @@
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_margin="10dp"
-       android:layout_toStartOf="@+id/pendUserCheckBox"
+       android:padding="10dp"
+       android:layout_toStartOf="@+id/pl"
        android:orientation="vertical">
 
+
        <TextView
+           android:layout_weight="1"
+           android:id="@+id/pendUserPickPoint"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:textSize="15sp"
-           android:layout_marginStart="3dp"
+           android:layout_margin="3dp"
+           android:text="@string/load"
+           android:textColor="#DD0000"
+           android:textSize="20sp" />
+       <TextView
+           android:layout_weight="1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
            android:textColor="@android:color/black"
            android:text="@string/load"
            android:id="@+id/pendUserPhone"/>
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/load"
-           android:layout_marginStart="3dp"
-           android:textSize="15sp"
-           android:textColor="@android:color/black"
-           android:id="@+id/pendUserPickPoint"/>
 
    </LinearLayout>
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:id="@+id/pl"
+    android:orientation="vertical">
     <CheckBox
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:padding="10dp"
+        android:paddingEnd="10dp"
         android:gravity="center"
         android:layout_margin="10dp"
-        android:layout_alignParentEnd="true"
         android:id="@+id/pendUserCheckBox"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/customaercall"
+        android:src="@drawable/ic_call"/>
+</LinearLayout>
+
 
 </RelativeLayout>

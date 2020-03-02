@@ -122,6 +122,18 @@
             android:layout_height="match_parent"
             android:id="@+id/tripsRecyclerId"/>
         <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/noTrip"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:layout_margin="40dp"
+            android:drawableTop="@drawable/ic_warning"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/black"
+            android:text="@string/no_trip"/>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.atandi.smarttravel.Constants.Links.ADD_PICK_DETAILS;
 import static com.atandi.smarttravel.Constants.Links.ADD_ROUTE_DETAILS;
 import static com.atandi.smarttravel.Constants.Links.FETCH_PLATES;
 import static com.atandi.smarttravel.Constants.Links.FETCH_ROUTE;
@@ -48,15 +49,15 @@ import static com.atandi.smarttravel.Constants.Links.UPDATE_ROUTE_DETAILS;
 
 public class RouteManagementFragment extends Fragment {
 
-    CardView NewAddRoute,manage;
+    CardView NewAddRoute,manage,NewAddPick;
 
-    EditText setVehicleRemainingSeats,newRouteName,newRouteCost;
-    Spinner bookStatusCheck,setVehicleSpinner,routeSpinner;
+    EditText setVehicleRemainingSeats,newRouteName,newRouteCost,newPickName;
+    Spinner bookStatusCheck,setVehicleSpinner,routeSpinner,pickRouteName;
 
     ProgressDialog progressDialog;
 
-    TextView newRoute;
-    Button BtnManage,BtnUpdateRoute,BtnAddRoute;
+    TextView newRoute,newPickPoint;
+    Button BtnManage,BtnUpdateRoute,BtnAddRoute,BtnAddPick;
 
     String[] status = {"not booking","booking"};
     List<String> vehicles,routes;
@@ -82,23 +83,28 @@ public class RouteManagementFragment extends Fragment {
         routeSpinner = view.findViewById(R.id.routeSpinner);
         setVehicleSpinner = view.findViewById(R.id.setVehicleSpinner);
         bookStatusCheck = view.findViewById(R.id.bookStatusCheck);
+        pickRouteName = view.findViewById(R.id.pickRouteName);
 
 //        EditText
         setVehicleRemainingSeats = view.findViewById(R.id.setVehicleRemainingSeats);
         newRouteName = view.findViewById(R.id.newRouteName);
         newRouteCost = view.findViewById(R.id.newRouteCost);
+        newPickName = view.findViewById(R.id.newPickName);
 
 //        TextView
         newRoute = view.findViewById(R.id.newRoute);
+        newPickPoint = view.findViewById(R.id.newPickPoint);
 
 //           Cards
         NewAddRoute = view.findViewById(R.id.NewAddRoute);
+        NewAddPick = view.findViewById(R.id.NewAddPick);
         manage = view.findViewById(R.id.manage);
 
 //        Buttons
         BtnManage = view.findViewById(R.id.BtnManage);
         BtnUpdateRoute = view.findViewById(R.id.BtnUpdateRoute);
         BtnAddRoute = view.findViewById(R.id.BtnAddRoute);
+        BtnAddPick  = view.findViewById(R.id.BtnAddPick);
 
         routes = new ArrayList<>();
         vehicles = new ArrayList<>();
@@ -110,6 +116,9 @@ public class RouteManagementFragment extends Fragment {
 //        for routes spinner
        final ArrayAdapter<String> routesAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,routes);
         routeSpinner.setAdapter(routesAdapter);
+        pickRouteName.setAdapter(routesAdapter);
+
+
 
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, FETCH_ROUTE, new Response.Listener<String>() {
             @Override
@@ -184,6 +193,7 @@ public class RouteManagementFragment extends Fragment {
                 if(manage.getVisibility()==View.GONE){
                     manage.setVisibility(View.VISIBLE);
                     NewAddRoute.setVisibility(View.GONE);
+                    NewAddPick.setVisibility(View.GONE);
                 }
                 else{
                     if(manage.getVisibility()==View.VISIBLE){
@@ -205,6 +215,25 @@ public class RouteManagementFragment extends Fragment {
                 else {
                     if(NewAddRoute.getVisibility()==View.VISIBLE){
                         NewAddRoute.setVisibility(View.GONE);
+                    }
+
+                }
+            }
+        });
+
+        //        for adding new pick point
+
+        newPickPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(NewAddPick.getVisibility()==View.GONE){
+                    NewAddPick.setVisibility(View.VISIBLE);
+                    manage.setVisibility(View.GONE);
+                    NewAddRoute.setVisibility(View.GONE);
+                }
+                else {
+                    if(newPickPoint.getVisibility()==View.VISIBLE){
+                        NewAddPick.setVisibility(View.GONE);
                     }
 
                 }
@@ -329,6 +358,70 @@ public class RouteManagementFragment extends Fragment {
                         }
                     };
                     requestQueue.add(addroute);
+                }
+            }
+        });
+
+
+
+        BtnAddPick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                if (pickRouteName.getSelectedItem().toString().isEmpty()) {
+                    MyBuilderClass myBuilderClass = new MyBuilderClass();
+                    myBuilderClass.MyBuilder(getContext(),"sorry you dont have connection to our servers at the moment");
+
+                } else {
+                    final String routename = pickRouteName.getSelectedItem().toString();
+                    final String pickname = newPickName.getText().toString();
+
+
+                    if (routename.isEmpty() || pickname.isEmpty()) {
+                        progressDialog.dismiss();
+                        MyBuilderClass myBuilderClass = new MyBuilderClass();
+                        myBuilderClass.MyBuilder(getContext(), "All fields are required");
+
+                    } else {
+                        StringRequest addpickpoint = new StringRequest(Request.Method.POST, ADD_PICK_DETAILS, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                progressDialog.dismiss();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                                alert.setTitle("Smart Travel");
+                                alert.setMessage(response);
+                                alert.setCancelable(false);
+                                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                newPickName.setText("");
+                                                NewAddPick.setVisibility(View.GONE);
+                                            }
+                                        }
+                                );
+                                alert.show();
+
+                            }
+                        },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> newRouteMap = new HashMap<>();
+                                newRouteMap.put("route_name", routename);
+                                newRouteMap.put("pick_point_name", pickname);
+                                return newRouteMap;
+                            }
+                        };
+                        requestQueue.add(addpickpoint);
+                    }
                 }
             }
         });

@@ -31,33 +31,7 @@
             android:textSize="24sp" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
 
-        <TextView
-            android:background="@color/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:textColor="@android:color/holo_orange_dark"
-            android:text="Select pick point"
-            android:textSize="24sp"/>
-
-
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@android:color/darker_gray"
-            android:hint="@string/pick_point"
-            android:id="@+id/pick"/>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,26 +54,66 @@
             android:hint="Click to select route"
             android:inputType="none"
             android:focusable="false"
+            android:gravity="center"
             android:textColor="@color/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:id="@+id/EditRoute"/>
 
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/colorAccentA"
+        android:id="@+id/routeRecyclerId"
+        android:visibility="gone"/>
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="10dp"
-       android:layout_marginEnd="10dp"
-       android:background="@color/colorPrimaryDark"
-       android:id="@+id/routeRecyclerId"
-       android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:text="Select pick point"
+            android:textSize="24sp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:inputType="none"
+            android:focusable="false"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:background="@android:color/darker_gray"
+            android:hint="@string/pick_point"
+            android:id="@+id/pick"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/colorAccentA"
+        android:id="@+id/pickRecyclerId"
+        android:visibility="gone"/>
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
+        android:visibility="gone"
         android:text="Next"
         android:id="@+id/BtnNext"
         android:textColor="@android:color/white"

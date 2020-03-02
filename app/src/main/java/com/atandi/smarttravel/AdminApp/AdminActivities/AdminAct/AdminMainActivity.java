@@ -31,12 +31,28 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 
-                LinearLayout linearRouteManager = findViewById(R.id.linearRouteManager);
-                LinearLayout linearActiveTracking = findViewById(R.id.linearActiveTracking);
-                LinearLayout linearBookedCustomer = findViewById(R.id.linearBookedCustomer);
-                LinearLayout linearVehicleRegistration = findViewById(R.id.linearVehicleRegistration);
-                LinearLayout linearDriverRegistration = findViewById(R.id.linearDriverRegistration);
-                LinearLayout linearUserNotification = findViewById(R.id.linearUserNotification);
+        LinearLayout linearRouteManager = findViewById(R.id.linearRouteManager);
+        LinearLayout linearActiveTracking = findViewById(R.id.linearActiveTracking);
+        LinearLayout linearBookedCustomer = findViewById(R.id.linearBookedCustomer);
+        LinearLayout linearVehicleRegistration = findViewById(R.id.linearVehicleRegistration);
+        LinearLayout linearDriverRegistration = findViewById(R.id.linearDriverRegistration);
+        LinearLayout linearUserNotification = findViewById(R.id.linearUserNotification);
+        TextView userMail = findViewById(R.id.userMail);
+
+//        fuser = mauth.getCurrentUser();
+////        assert fuser != null;
+////        String s = fuser.getEmail();
+
+        Intent intent = getIntent();
+        String mail = intent.getStringExtra("User");
+
+
+        if(mail==null){
+            userMail.setText(R.string.admin);
+        }
+        else{
+            userMail.setText(mail);
+        }
 
       Button AdminLogout = findViewById(R.id.AdminLogout);
 
@@ -44,21 +60,9 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
           @Override
           public void onClick(View v) {
               FirebaseAuth.getInstance().signOut();
+              startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
+              finish();
 
-// this listener will be called when there is change in firebase user session
-              FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-                  @Override
-                  public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                      FirebaseUser user = firebaseAuth.getCurrentUser();
-                      if (user == null) {
-                          // user auth state is changed - user is null
-                          // launch login activity
-                          Toast.makeText(AdminMainActivity.this, "you are logged out", Toast.LENGTH_SHORT).show();
-                          startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
-                          finish();
-                      }
-                  }
-              };
           }
       });
 
@@ -79,9 +83,7 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
                 if(v.getId()==R.id.linearRouteManager){
                     intent.putExtra("header","Route Management");
                 }
-                else if(v.getId()==R.id.linearActiveTracking){
-                    intent.putExtra("header","Active Tracking");
-                }
+
                 else if(v.getId()==R.id.linearBookedCustomer){
                     intent.putExtra("header","Booked Customers");
                 }
@@ -95,6 +97,10 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
 
                 if(v.getId()==R.id.linearUserNotification){
                     startActivity(new Intent(AdminMainActivity.this,VehicleActivity.class));
+                    finish();
+                }
+                else if(v.getId()==R.id.linearActiveTracking){
+                    startActivity(new Intent(AdminMainActivity.this,AdminMapsActivity.class));
                 }
 
             }

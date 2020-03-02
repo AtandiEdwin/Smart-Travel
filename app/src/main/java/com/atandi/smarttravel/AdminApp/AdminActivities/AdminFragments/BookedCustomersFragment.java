@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ public class BookedCustomersFragment extends Fragment {
     List<String> vehiclelist,routelist;
     List<PendingUserModel> mUser;
     ProgressDialog progressDialog;
+    TextView noCustomer;
 
     @Nullable
     @Override
@@ -65,6 +67,7 @@ public class BookedCustomersFragment extends Fragment {
 
         pendingUserSpinner = view.findViewById(R.id.pendingUserSpinner);
         pendingUserRouteSpinner = view.findViewById(R.id.pendingUserRouteSpinner);
+        noCustomer = view.findViewById(R.id.noCustomer);
         BtnLoadUsers = view.findViewById(R.id.BtnLoadUsers);
         pendingUserRecycler = view.findViewById(R.id.pendingUserRecycler);
         pendingUserRecycler.setHasFixedSize(true);
@@ -147,19 +150,26 @@ public class BookedCustomersFragment extends Fragment {
         BtnLoadUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pendingUserRecycler.getVisibility()==View.GONE){
-                    pendingUserRecycler.setVisibility(View.VISIBLE);
-
+                if(pendingUserRecycler.getVisibility()==View.GONE && noCustomer.getVisibility()==View.GONE){
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.show();
+                    progressDialog.setContentView(R.layout.progress_layout);
+                    progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    loadUsers();
+                }
+                else if(pendingUserRecycler.getVisibility()==View.VISIBLE || noCustomer.getVisibility()==View.VISIBLE){
+                    pendingUserRecycler.setVisibility(View.GONE);
+                    noCustomer.setVisibility(View.GONE);
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.show();
+                    progressDialog.setContentView(R.layout.progress_layout);
+                    progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    loadUsers();
                 }
                 else {
                     pendingUserRecycler.setVisibility(View.GONE);
+                    noCustomer.setVisibility(View.GONE);
                 }
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.progress_layout);
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                loadUsers();
-
             }
         });
     }
@@ -176,28 +186,36 @@ public class BookedCustomersFragment extends Fragment {
             final StringRequest pstringRequest = new StringRequest(Request.Method.POST, FETCH_PENDING_USERS, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    progressDialog.dismiss();
-                    JSONArray jsonArray;
-                    mUser.clear();
-                    try {
-                        jsonArray = new JSONArray(response);
 
-                        for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONArray jsonArray;
+                        mUser.clear();
+                        try {
+                            jsonArray = new JSONArray(response);
+                            if (jsonArray.length()==0) {
+                                progressDialog.dismiss();
+                                pendingUserRecycler.setVisibility(View.GONE);
+                                noCustomer.setVisibility(View.VISIBLE);
+                            } else {
+                                progressDialog.dismiss();
+                                noCustomer.setVisibility(View.GONE);
+                                pendingUserRecycler.setVisibility(View.VISIBLE);
+                                for (int i = 0; i < jsonArray.length(); i++) {
 
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String phones = jsonObject.getString("user_phone");
-                            String pickpoint = jsonObject.getString("pickpoint");
-                            PendingUserModel pendingUserModel = new PendingUserModel(phones,pickpoint);
-                            mUser.add(pendingUserModel);
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String phones = jsonObject.getString("user_phone");
+                                    String pickpoint = jsonObject.getString("pickpoint");
+                                    PendingUserModel pendingUserModel = new PendingUserModel(phones, pickpoint);
+                                    mUser.add(pendingUserModel);
+                                }
+                                PendingUserAdapter adapter = new PendingUserAdapter(getContext(), mUser);
+                                pendingUserRecycler.setAdapter(adapter);
+                                pendingUserRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        PendingUserAdapter adapter = new PendingUserAdapter(getContext(),mUser);
-                        pendingUserRecycler.setAdapter(adapter);
-                        pendingUserRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
             },
                     new Response.ErrorListener() {
                         @Override
