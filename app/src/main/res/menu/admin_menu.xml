@@ -15,9 +15,9 @@
         android:icon="@drawable/ic_star"
         android:title="@string/nav_rate"/>
     <item
-        android:id="@+id/action_admin"
+        android:id="@+id/action_customer"
         android:icon="@drawable/ic_next"
-        android:title="@string/nav_admin"/>
+        android:title="@string/nav_client"/>
     <item
         android:id="@+id/action_logout"
         android:icon="@drawable/ic_account"

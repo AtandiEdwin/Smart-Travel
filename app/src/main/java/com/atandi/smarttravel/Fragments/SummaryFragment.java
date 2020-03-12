@@ -3,6 +3,7 @@ package com.atandi.smarttravel.Fragments;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -32,6 +34,7 @@ import com.atandi.smarttravel.R;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.atandi.smarttravel.Constants.Links.SAVE_DETAILS;
 
@@ -123,6 +126,7 @@ public class SummaryFragment extends Fragment {
                        alert.setMessage(response);
                        alert.setCancelable(false);
                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                           @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
                                endCostId.setText("");
@@ -130,7 +134,7 @@ public class SummaryFragment extends Fragment {
                                endRouteId.setText("");
                                endSeatsId.setText("");
                                endVehicleId.setText("");
-                               getActivity().onBackPressed();
+                               Objects.requireNonNull(getActivity()).onBackPressed();
                            }
                        }
                        );

@@ -33,29 +33,23 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    TextView toLoin;
+    TextView toLogin;
     Button BtnRegister;
-    EditText RpasswordUserId,RemailUserId,RuserNameId;
-
+    EditText customerPasswordId,customerNumberId,customerUserNameId;
     ProgressDialog progressDialog;
-
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mAuth = FirebaseAuth.getInstance();
 
-        toLoin = findViewById(R.id.toLoin);
+        toLogin = findViewById(R.id.toLoin);
         BtnRegister  =findViewById(R.id.BtnRegister);
-        RpasswordUserId = findViewById(R.id.RpasswordUserId);
-        RemailUserId = findViewById(R.id.RemailUserId);
-        RuserNameId =findViewById(R.id.RuserNameId);
+        customerPasswordId = findViewById(R.id.customerPasswordId);
+        customerNumberId = findViewById(R.id.customerNumberId);
+        customerUserNameId =findViewById(R.id.customerUserNameId);
 
-
-
-        toLoin.setOnClickListener(new View.OnClickListener() {
+        toLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
@@ -71,31 +65,52 @@ public class RegisterActivity extends AppCompatActivity {
               progressDialog.show();
               progressDialog.setContentView(R.layout.progress_layout);
               progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-              final String email = RemailUserId.getText().toString();
-              final String password = RpasswordUserId.getText().toString();
-              final String username = RuserNameId.getText().toString();
+              final String customerPhone = customerNumberId.getText().toString();
+              final String password = customerPasswordId.getText().toString();
+              final String username = customerUserNameId.getText().toString();
 
-              if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username)) {
+              if (TextUtils.isEmpty(customerPhone) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username)) {
+                  progressDialog.dismiss();
                   Toast.makeText(RegisterActivity.this, "All fields", Toast.LENGTH_SHORT).show();
               } else if (password.length() < 6) {
+                  progressDialog.dismiss();
                   Toast.makeText(RegisterActivity.this, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show();
               } else {
-                  register(email, password, username);
+                  register(customerPhone,username,password);
               }
           }
       });
     }
 
-    public void register(String memail,String mpassword, final String musername){
+    public void register(final String customerphone, final String musername, final String mpassword){
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
 
-        User user = new User(musername,memail,mpassword);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
+                if(dataSnapshot.child(customerphone).exists()){
+                    Toast.makeText(RegisterActivity.this, "User number already registered try changing your phone number", Toast.LENGTH_SHORT).show();
+                }
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
+                else{
+                    User user = new User(musername,mpassword);
+                    reference.child(customerphone).setValue(user);
+                    Toast.makeText(RegisterActivity.this, "you were registered successifully now login", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
 
-        reference.child(memail).setValue(user);
-        progressDialog.dismiss();
-        startActivity(new Intent(RegisterActivity.this,MainActivity.class));
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
         finish();
-
     }
 }

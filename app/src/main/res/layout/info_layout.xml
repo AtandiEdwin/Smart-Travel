@@ -33,7 +33,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:id="@+id/welcomeNote"
-            android:text="@string/about_info"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:textSize="20sp"

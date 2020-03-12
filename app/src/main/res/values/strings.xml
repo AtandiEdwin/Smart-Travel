@@ -102,4 +102,11 @@
         to the specified route</string>
     <string name="no_trip">Dear customer we are sorry you have not made any trip with us between the specified days.
         Please keep travelling with us to enjoy our great services</string>
+    <string name="_07">07.....</string>
+    <string name="nav_rate">Rate</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_logout">Logout</string>
+    <string name="nav_admin">Go Admin</string>
+    <string name="nav_client">Go Customer</string>
+    <string name="adap">Welcome to this convenient mobile application that is meant to solve our public transport issues. Hope you will enjoy. Thank you.</string>
 </resources>

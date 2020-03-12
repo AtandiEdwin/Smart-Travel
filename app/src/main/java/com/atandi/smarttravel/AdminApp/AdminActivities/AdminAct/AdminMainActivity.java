@@ -3,26 +3,24 @@ package com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterViewFlipper;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atandi.smarttravel.Activities.HomeActivity;
 import com.atandi.smarttravel.Activities.LoginActivity;
 import com.atandi.smarttravel.MainActivity;
 import com.atandi.smarttravel.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import io.paperdb.Paper;
+
+import static com.atandi.smarttravel.Constants.PaperComons.ADMIN_EMAIL;
 
 public class AdminMainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -30,6 +28,8 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
+        Paper.init(AdminMainActivity.this);
+        String adminMail = Paper.book().read(ADMIN_EMAIL);
 
         LinearLayout linearRouteManager = findViewById(R.id.linearRouteManager);
         LinearLayout linearActiveTracking = findViewById(R.id.linearActiveTracking);
@@ -38,33 +38,8 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         LinearLayout linearDriverRegistration = findViewById(R.id.linearDriverRegistration);
         LinearLayout linearUserNotification = findViewById(R.id.linearUserNotification);
         TextView userMail = findViewById(R.id.userMail);
+        BottomNavigationView navigator = findViewById(R.id.adminnavigator);
 
-//        fuser = mauth.getCurrentUser();
-////        assert fuser != null;
-////        String s = fuser.getEmail();
-
-        Intent intent = getIntent();
-        String mail = intent.getStringExtra("User");
-
-
-        if(mail==null){
-            userMail.setText(R.string.admin);
-        }
-        else{
-            userMail.setText(mail);
-        }
-
-      Button AdminLogout = findViewById(R.id.AdminLogout);
-
-      AdminLogout.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              FirebaseAuth.getInstance().signOut();
-              startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
-              finish();
-
-          }
-      });
 
         linearRouteManager.setOnClickListener(this);
         linearActiveTracking.setOnClickListener(this);
@@ -73,7 +48,45 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         linearDriverRegistration.setOnClickListener(this);
         linearUserNotification.setOnClickListener(this);
 
+
+//        give functionality to navigation view items
+        navigator.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.action_share:
+                        Toast.makeText(AdminMainActivity.this, "thank you for planning to share this app", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.action_rate:
+                        Toast.makeText(AdminMainActivity.this, "thank you for planning to rate this app", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.action_admin:
+                        startActivity(new Intent(AdminMainActivity.this, MainActivity.class));
+                        finish();
+                        break;
+
+                    case R.id.action_logout:
+                        Paper.book().destroy();
+                        startActivity(new Intent(AdminMainActivity.this, AdminLoginActivity.class));
+                        finish();
+                        break;
+                }
             }
+        });
+
+//        set welcome email
+        if(adminMail!=null){
+            if(!adminMail.isEmpty()){
+                userMail.setText(adminMail);
+            }
+        }
+        else{
+            String admin = "Administrator";
+            userMail.setText(admin);
+        }
+    }
 
             @Override
             public void onClick(View v) {
@@ -106,8 +119,6 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
             }
 
     @Override
-    public void onBackPressed() {
-        startActivity(new Intent(AdminMainActivity.this,MainActivity.class));
-        finish();
+    public void onBackPressed() { finish();
     }
 }

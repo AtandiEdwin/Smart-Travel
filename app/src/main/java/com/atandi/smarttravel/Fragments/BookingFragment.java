@@ -34,6 +34,10 @@ import com.atandi.smarttravel.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.paperdb.Paper;
+
+import static com.atandi.smarttravel.Constants.PaperComons.USER_PHONE;
+
 public class BookingFragment extends Fragment {
 
     private DetailsViewModel detailsViewModel;
@@ -88,8 +92,6 @@ public class BookingFragment extends Fragment {
 
         final EditText bookedSeatsId= view.findViewById(R.id.bookedSeatsId);
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(MyNumberReceiver,new IntentFilter("Number"));
-
 
         ImageButton btncallId = view.findViewById(R.id.btncallId);
         Button BtnBook = view.findViewById(R.id.bookNowId);
@@ -100,6 +102,14 @@ public class BookingFragment extends Fragment {
         driverNameId = view.findViewById(R.id.driverNameId);
         driverPhoneId = view.findViewById(R.id.driverPhoneId);
         customerPhoneId= view.findViewById(R.id.customerPhoneId);
+
+//        init paper and its stuff
+        Paper.init(getContext());
+
+        String phones = Paper.book().read(USER_PHONE);
+
+        customerPhoneId.setText(phones);
+
 
         btncallId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,25 +153,11 @@ public class BookingFragment extends Fragment {
 
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,new SummaryFragment());
+                    fragmentTransaction.replace(R.id.Framelayoutid,new SummaryFragment());
                     fragmentTransaction.commit();
                     progressDialog.dismiss();
                 }
             }
         });
     }
-
-    public BroadcastReceiver MyNumberReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String userNumber = intent.getStringExtra("number");
-            if(userNumber==null){
-                customerPhoneId.setText("");
-            }
-            else{
-                customerPhoneId.setText(userNumber);
-            }
-
-        }
-    };
 }

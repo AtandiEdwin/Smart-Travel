@@ -21,7 +21,7 @@ import com.atandi.smarttravel.R;
 public class ManageAccountFragment extends Fragment {
 
     ListView listView;
-    String[] values = {"Change phone number","Change Password","Delete Account"};
+    String[] values = {"Change Password","Delete Account"};
 
     public ManageAccountFragment() {
         // Required empty public constructor
@@ -43,16 +43,12 @@ public class ManageAccountFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String str = parent.getItemAtPosition(position).toString();
-                if(str.equals("Change phone number")){
-                    MyBuilderClass myBuilderClass = new MyBuilderClass();
-                    myBuilderClass.MyBuilder(getContext(),"200");
-                }
-                else if(str.equals("Change Password")){
+                if(str.equals("Change Password")){
 
                     FragmentManager fragmentManager = getFragmentManager();
                     assert fragmentManager != null;
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,new ChangePasswordFragment());
+                    fragmentTransaction.replace(R.id.Framelayoutid,new ChangePasswordFragment());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
                 else if(str.equals("Delete Account")){
@@ -60,7 +56,7 @@ public class ManageAccountFragment extends Fragment {
                     FragmentManager fragmentManager = getFragmentManager();
                     assert fragmentManager != null;
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,new DeleteAccountFragment());
+                    fragmentTransaction.replace(R.id.Framelayoutid,new DeleteAccountFragment());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
             }

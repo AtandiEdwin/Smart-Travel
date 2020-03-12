@@ -276,23 +276,20 @@
                                     android:textSize="15sp" />
                             </LinearLayout>
                         </LinearLayout>
-
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Logout"
-                            android:layout_margin="20dp"
-                            android:textColor="@android:color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:background="@color/colorButtons"
-                            android:id="@+id/AdminLogout"/>
-
                     </LinearLayout>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </RelativeLayout>
 
     </LinearLayout>
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/adminnavigator"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:menu="@menu/nav_items"/>
 </RelativeLayout>

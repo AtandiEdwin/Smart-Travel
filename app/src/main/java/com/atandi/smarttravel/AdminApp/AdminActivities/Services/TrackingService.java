@@ -40,6 +40,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.paperdb.Paper;
+
+import static com.atandi.smarttravel.Constants.PaperComons.USER_PHONE;
+
 public class TrackingService extends Service {
 
         private static final String TAG = TrackingService.class.getSimpleName();
@@ -62,7 +66,17 @@ public class TrackingService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String finalplate = intent.getStringExtra("number");
-            requestLocationUpdates(finalplate);
+
+            assert finalplate != null;
+            if(finalplate.isEmpty()){
+                Paper.init(TrackingService.this);
+                String phn = Paper.book().read(USER_PHONE);
+                userRequestLocationUpdates(phn);
+            }
+            else{
+                requestLocationUpdates(finalplate);
+            }
+
         }
     };
 
@@ -127,4 +141,38 @@ public class TrackingService extends Service {
                 }, null);
             }
         }
+
+
+
+
+    private void userRequestLocationUpdates(final String phn) {
+        LocationRequest request = new LocationRequest();
+        request.setInterval(10000);
+
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
+        final String path = getString(R.string.firebase_path);
+        int permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+
+            client.requestLocationUpdates(request, new LocationCallback() {
+                @Override
+                public void onLocationResult(final LocationResult locationResult) {
+                    if(!phn.isEmpty()) {
+                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Customer").child(phn).child(path);
+                        Location location = locationResult.getLastLocation();
+                        if (location != null) {
+                            ref.setValue(location);
+                        }
+                    }
+                    else{
+                            MyBuilderClass myBuilderClass = new MyBuilderClass();
+                        myBuilderClass.MyBuilder(TrackingService.this,"server is unable to recognize the plate number");
+                    }
+                }
+            }, null);
+        }
+    }
 }

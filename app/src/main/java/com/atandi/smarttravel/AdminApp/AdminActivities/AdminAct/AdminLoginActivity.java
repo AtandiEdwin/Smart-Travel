@@ -30,6 +30,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.paperdb.Paper;
+
+import static com.atandi.smarttravel.Constants.PaperComons.ADMIN_EMAIL;
+
 public class AdminLoginActivity extends AppCompatActivity {
 
     EditText loginEmailUserId,loginPasswordUserId;
@@ -65,6 +69,8 @@ public class AdminLoginActivity extends AppCompatActivity {
                 loginPasswordUserId = findViewById(R.id.loginPasswordUserId);
                 Btnlogin = findViewById(R.id.Btnlogin);
 
+        Paper.init(AdminLoginActivity.this);
+
                 Btnlogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -82,10 +88,9 @@ public class AdminLoginActivity extends AppCompatActivity {
 
                             if(task.isSuccessful()){
                                 progressDialog.dismiss();
-                                String userMail = mail;
+                                Paper.book().write(ADMIN_EMAIL,mail);
                                 Intent intent =  new Intent(AdminLoginActivity.this, AdminMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("User",userMail);
                                 startActivity(intent);
                                 finish();
                             }
@@ -100,4 +105,9 @@ public class AdminLoginActivity extends AppCompatActivity {
                 }
                 });
             }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

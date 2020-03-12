@@ -319,7 +319,7 @@ public class RouteSelectingFragment extends Fragment {
                                         model.setMlist(mlist);
                                         FragmentManager fragmentManager = getFragmentManager();
                                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        fragmentTransaction.replace(R.id.nav_host_fragment, new BookingFragment());
+                                        fragmentTransaction.replace(R.id.Framelayoutid, new BookingFragment());
                                         fragmentTransaction.addToBackStack(null);
                                         fragmentTransaction.commit();
                                         progressDialog.dismiss();
