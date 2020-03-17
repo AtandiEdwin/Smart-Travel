@@ -109,4 +109,11 @@
     <string name="nav_admin">Go Admin</string>
     <string name="nav_client">Go Customer</string>
     <string name="adap">Welcome to this convenient mobile application that is meant to solve our public transport issues. Hope you will enjoy. Thank you.</string>
+    
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="assign_key">Assign Key</string>
+    <string name="your_key">your key</string>
+    <string name="access_key_required">Access Key Required</string>
+    <string name="load_map">Load map</string>
+
 </resources>

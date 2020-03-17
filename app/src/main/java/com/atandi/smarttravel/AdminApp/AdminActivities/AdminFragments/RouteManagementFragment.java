@@ -49,18 +49,18 @@ import static com.atandi.smarttravel.Constants.Links.UPDATE_ROUTE_DETAILS;
 
 public class RouteManagementFragment extends Fragment {
 
-    CardView NewAddRoute,manage,NewAddPick;
+    private CardView NewAddRoute,manage,NewAddPick;
 
-    EditText setVehicleRemainingSeats,newRouteName,newRouteCost,newPickName;
-    Spinner bookStatusCheck,setVehicleSpinner,routeSpinner,pickRouteName;
+    private EditText setVehicleRemainingSeats,newRouteName,newRouteCost,newPickName;
+    private Spinner bookStatusCheck,setVehicleSpinner,routeSpinner,pickRouteName;
 
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
-    TextView newRoute,newPickPoint;
-    Button BtnManage,BtnUpdateRoute,BtnAddRoute,BtnAddPick;
+    private TextView newRoute,newPickPoint;
+    private Button BtnManage,BtnUpdateRoute,BtnAddRoute,BtnAddPick;
 
-    String[] status = {"not booking","booking"};
-    List<String> vehicles,routes;
+    private String[] status = {"not booking","booking"};
+    private List<String> vehicles,routes;
 
     @Nullable
     @Override

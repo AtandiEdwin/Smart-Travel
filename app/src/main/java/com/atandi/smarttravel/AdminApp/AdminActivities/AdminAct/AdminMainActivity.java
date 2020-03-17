@@ -1,8 +1,10 @@
 package com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -32,7 +34,7 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         String adminMail = Paper.book().read(ADMIN_EMAIL);
 
         LinearLayout linearRouteManager = findViewById(R.id.linearRouteManager);
-        LinearLayout linearActiveTracking = findViewById(R.id.linearActiveTracking);
+        LinearLayout linearActiveTracking = findViewById(R.id.linearAssignKey);
         LinearLayout linearBookedCustomer = findViewById(R.id.linearBookedCustomer);
         LinearLayout linearVehicleRegistration = findViewById(R.id.linearVehicleRegistration);
         LinearLayout linearDriverRegistration = findViewById(R.id.linearDriverRegistration);
@@ -62,7 +64,7 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
                         Toast.makeText(AdminMainActivity.this, "thank you for planning to rate this app", Toast.LENGTH_SHORT).show();
                         break;
 
-                    case R.id.action_admin:
+                    case R.id.action_customer:
                         startActivity(new Intent(AdminMainActivity.this, MainActivity.class));
                         finish();
                         break;
@@ -106,19 +108,35 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
                 else if(v.getId()==R.id.linearDriverRegistration){
                     intent.putExtra("header","Driver Registration");
                 }
+                else if(v.getId()==R.id.linearAssignKey){
+                    intent.putExtra("header","Assign Key");
+                }
                 startActivity(intent);
+                finish();
 
                 if(v.getId()==R.id.linearUserNotification){
                     startActivity(new Intent(AdminMainActivity.this,VehicleActivity.class));
                     finish();
                 }
-                else if(v.getId()==R.id.linearActiveTracking){
-                    startActivity(new Intent(AdminMainActivity.this,AdminMapsActivity.class));
-                }
+
 
             }
 
     @Override
-    public void onBackPressed() { finish();
+    public void onBackPressed() { AlertDialog.Builder alert = new AlertDialog.Builder(AdminMainActivity.this);
+        alert.setMessage("You are about to exit smart-travel");
+        alert.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.create().show();
     }
 }

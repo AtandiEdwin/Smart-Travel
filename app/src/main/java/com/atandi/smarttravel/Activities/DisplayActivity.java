@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminHomeActivity;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminLoginActivity;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
+import com.atandi.smarttravel.EditFragments.TrackingTypeFragment;
 import com.atandi.smarttravel.Fragments.AccountsFragment;
 import com.atandi.smarttravel.Fragments.InfoFragment;
 import com.atandi.smarttravel.Fragments.NotificationFragment;
@@ -56,7 +57,7 @@ public class DisplayActivity extends AppCompatActivity {
             StartFragment(new TripsFragment(),"Trips");
         }
         else if(title.equals("Tracker")){
-            StartFragment(new RouteSelectingFragment(),"Tracker");
+            StartFragment(new TrackingTypeFragment(),"Tracker");
         }
         else if(title.equals("Notifications")){
             StartFragment(new NotificationFragment(),"Notifications");
@@ -67,7 +68,6 @@ public class DisplayActivity extends AppCompatActivity {
         else if(title.equals("Info Center")){
             StartFragment(new InfoFragment(),"Info Center");
         }
-
     }
 
     @Override

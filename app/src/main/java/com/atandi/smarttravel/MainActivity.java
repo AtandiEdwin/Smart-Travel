@@ -1,9 +1,11 @@
 package com.atandi.smarttravel;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -147,16 +149,29 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         else if(v.getId()==R.id.linearInfo){
             intent.putExtra("header","Info Center");
         }
-
+        else if(v.getId()==R.id.linearTracker){
+            intent.putExtra("header","Tracker");
+        }
         startActivity(intent);
         finish();
-        if(v.getId()==R.id.linearTracker){
-            startActivity(new Intent(MainActivity.this, UserTrackerActivity.class));
-        }
-
     }
     @Override
     public void onBackPressed() {
-        finish();
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setMessage("You are about to exit smart-travel");
+        alert.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.create().show();
     }
 }

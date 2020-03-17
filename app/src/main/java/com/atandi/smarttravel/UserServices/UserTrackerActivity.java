@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.atandi.smarttravel.Activities.MapsActivity;

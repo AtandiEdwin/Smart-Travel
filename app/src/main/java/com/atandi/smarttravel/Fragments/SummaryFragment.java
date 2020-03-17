@@ -36,7 +36,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import io.paperdb.Paper;
+
 import static com.atandi.smarttravel.Constants.Links.SAVE_DETAILS;
+import static com.atandi.smarttravel.Constants.PaperComons.PICKPOINT;
+import static com.atandi.smarttravel.Constants.PaperComons.VEHICLE_PLATE;
 
 public class SummaryFragment extends Fragment {
 
@@ -58,6 +62,8 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Paper.init(getContext());
 
         summaryViewModel = ViewModelProviders.of(getActivity()).get(SummaryViewModel.class);
         summaryViewModel.getSummary().observe(getViewLifecycleOwner(), new Observer<List>() {
@@ -116,6 +122,9 @@ public class SummaryFragment extends Fragment {
                 final String totalcost = endCostId.getText().toString();
                 final String vehicle_plate = endVehicleId.getText().toString();
                 final String user_phone = endPhoneId.getText().toString();
+
+                Paper.book().write(PICKPOINT,pickpoint);
+                Paper.book().write(VEHICLE_PLATE,vehicle_plate);
 
                 StringRequest newStringRequest = new StringRequest(Request.Method.POST, SAVE_DETAILS, new Response.Listener<String>() {
                     @Override

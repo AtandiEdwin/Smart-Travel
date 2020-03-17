@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.atandi.smarttravel.Activities.DisplayActivity;
 import com.atandi.smarttravel.Activities.LoginActivity;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments.ActiveTrackingFragment;
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments.AssignKeyFragment;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments.BookedCustomersFragment;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments.DriverRegistrationFragment;
 import com.atandi.smarttravel.AdminApp.AdminActivities.AdminFragments.RouteManagementFragment;
@@ -79,6 +80,9 @@ public class AdminHomeActivity extends AppCompatActivity {
                 }
                 else if(title.equals("User Notification")){
                     StartFragment(new UserNotificationFragment(),"User Notification");
+                }
+                else if(title.equals("Assign Key")){
+                    StartFragment(new AssignKeyFragment(),"Assign Key");
                 }
 
             }

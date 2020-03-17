@@ -249,8 +249,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:visibility="invisible"
-                                android:id="@+id/linearActiveTracking"
+                                android:id="@+id/linearAssignKey"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -271,7 +270,7 @@
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="2dp"
                                     android:gravity="center"
-                                    android:text="@string/map_view"
+                                    android:text="@string/assign_key"
                                     android:textColor="@android:color/black"
                                     android:textSize="15sp" />
                             </LinearLayout>

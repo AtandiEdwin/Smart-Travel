@@ -133,14 +133,7 @@
                             android:textSize="20sp"
                             android:textColor="@android:color/black"
                             android:layout_marginStart="3dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/manage"
-                            android:textSize="20sp"
-                            android:id="@+id/routNameManaged"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
