@@ -11,11 +11,13 @@ public class Links {
     public static  final  String FETCH_PLATES= BASE_URL + "plates.php";
     public static  final  String FETCH_PENDING_USERS= BASE_URL + "pending_user.php";
     public static  final  String FETCH_ACCOUNT_DETAILS= BASE_URL + "account_details.php";
+    public static  final  String FETCH_SACCO= BASE_URL + "sacco.php";
 
     public static  final  String REGISTER_DRIVER= BASE_URL + "registerDriver.php";
     public static  final  String REGISTER_VEHICLE= BASE_URL + "registerVehicle.php";
 
     public static  final  String SAVE_DETAILS= BASE_URL + "summary.php";
+    public static  final  String SAVE_MESSAGE= BASE_URL + "message.php";
     public static  final  String ASSIGNKEY= BASE_URL + "assign_key.php";
 
     public static  final  String UPDATE_ROUTE_DETAILS= BASE_URL + "update_route.php";

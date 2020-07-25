@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -39,6 +41,7 @@ import java.util.Objects;
 import io.paperdb.Paper;
 
 import static com.atandi.smarttravel.Constants.Links.SAVE_DETAILS;
+import static com.atandi.smarttravel.Constants.Links.SAVE_MESSAGE;
 import static com.atandi.smarttravel.Constants.PaperComons.PICKPOINT;
 import static com.atandi.smarttravel.Constants.PaperComons.VEHICLE_PLATE;
 
@@ -105,7 +108,12 @@ public class SummaryFragment extends Fragment {
         BtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed();
+
+//                getActivity().onBackPressed();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.Framelayoutid,new BookingFragment());
+                fragmentTransaction.commit();
             }
         });
 
@@ -128,7 +136,7 @@ public class SummaryFragment extends Fragment {
 
                 StringRequest newStringRequest = new StringRequest(Request.Method.POST, SAVE_DETAILS, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(final String response) {
                         progressDialog.dismiss();
                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                        alert.setTitle("Smart Travel");
@@ -144,6 +152,29 @@ public class SummaryFragment extends Fragment {
                                endSeatsId.setText("");
                                endVehicleId.setText("");
                                Objects.requireNonNull(getActivity()).onBackPressed();
+
+                               StringRequest summaryRequest = new StringRequest(Request.Method.POST, SAVE_MESSAGE, new Response.Listener<String>() {
+                                   @Override
+                                   public void onResponse(String response) {
+                                       Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+
+                                   }
+                               }, new Response.ErrorListener() {
+                                   @Override
+                                   public void onErrorResponse(VolleyError error) {
+
+                                   }
+                               }){
+                                   @Override
+                                   protected Map<String, String> getParams() {
+                                       Map<String,String> mmap = new HashMap<>();
+                                       mmap.put("message",response);
+                                       return mmap;
+                                   }
+                               };
+
+                               RequestQueue queue = Volley.newRequestQueue(getContext());
+                               queue.add(summaryRequest);
                            }
                        }
                        );

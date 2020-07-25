@@ -132,8 +132,10 @@ public class BookingFragment extends Fragment {
 
                 if(bookedSeatsId.getText().toString().isEmpty() ||customerPhoneId.getText().toString().isEmpty()){
                     progressDialog.dismiss();
+                    bookedSeatsId.setError("field is required");
+                    customerPhoneId.setError("please provide contact");
 
-                    myBuilderClass.MyBuilder(getContext()," please check that you have provided the required details");
+//                    myBuilderClass.MyBuilder(getContext()," please check that you have provided the required details");
                 }
                 else{
                     List finaldetails  = new ArrayList();

@@ -154,7 +154,8 @@ private void loadTrips(){
 
     final String FROMDATE = fromDates.getText().toString();
     final String TODATE = toDates.getText().toString();
-    final String phone = Paper.book().read(USER_PHONE);
+//    final String phone = Paper.book().read(USER_PHONE);
+    final String phone ="0726123366";
 
     if(FROMDATE.isEmpty() && TODATE.isEmpty()){
         progressDialog.dismiss();

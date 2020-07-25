@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -118,25 +119,30 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
                     startActivity(new Intent(AdminMainActivity.this,VehicleActivity.class));
                     finish();
                 }
-
-
             }
 
     @Override
-    public void onBackPressed() { AlertDialog.Builder alert = new AlertDialog.Builder(AdminMainActivity.this);
-        alert.setMessage("You are about to exit smart-travel");
-        alert.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+    public void onBackPressed() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.exit_layout);
+        Button btnexitok = dialog.findViewById(R.id.btnexitok);
+        Button btnexitno = dialog.findViewById(R.id.btnexitno);
+
+        btnexitok.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+
                 dialog.dismiss();
             }
         });
-        alert.create().show();
+
+        btnexitno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        dialog.show();
     }
 }

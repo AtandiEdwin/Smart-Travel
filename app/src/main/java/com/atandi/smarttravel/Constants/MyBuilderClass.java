@@ -11,6 +11,12 @@ public class MyBuilderClass extends Application {
         builder.setTitle("Smart Travel");
         builder.setMessage(message);
         builder.setCancelable(true);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.create().show();
     }
 }
