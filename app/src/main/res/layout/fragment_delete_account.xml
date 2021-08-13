@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="#232323"
+    android:padding="5dp"
+    tools:context=".EditFragments.DeleteAccountFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="24sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@android:color/holo_orange_dark"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawablePadding="30dp"
+        android:textSize="15sp"
+        android:drawableStart="@drawable/ic_warning"
+        android:textColor="@android:color/holo_red_dark"
+        android:text="@string/delete_account_text" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:text="Delete My Account"
+        android:background="@android:color/holo_red_dark"
+        android:layout_margin="30dp"
+        android:id="@+id/btnDeleteAccount"/>
+
+</LinearLayout>

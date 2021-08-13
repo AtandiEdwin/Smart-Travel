@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/colorAccentA"
+    android:layout_height="match_parent">
+
+ <androidx.cardview.widget.CardView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:elevation="3dp"
+     android:layout_margin="10dp">
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@color/colorPrimaryDarkA"
+         android:orientation="vertical">
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal">
+
+         <LinearLayout
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:background="@drawable/layout_shadow"
+             android:orientation="vertical">
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textSize="20sp"
+                 android:text="@string/select_vehicle"
+                 android:textColor="@android:color/black"/>
+
+             <Spinner
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/pendingUserSpinner"/>
+
+         </LinearLayout>
+         <LinearLayout
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+            android:background="@drawable/layout_shadow"
+             android:orientation="vertical">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textSize="20sp"
+                 android:text="@string/select_route"
+                 android:textColor="@android:color/black"/>
+
+             <Spinner
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/pendingUserRouteSpinner"/>
+         </LinearLayout>
+
+     </LinearLayout>
+
+     <Button
+         android:id="@+id/BtnLoadUsers"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/load"
+         android:textSize="20sp"
+         android:layout_margin="20dp"
+         android:background="@color/colorButtons"/>
+     </LinearLayout>
+ </androidx.cardview.widget.CardView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pendingUserRecycler"/>
+
+    <TextView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noCustomer"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:layout_margin="40dp"
+        android:drawableTop="@drawable/ic_warning"
+        android:drawablePadding="10dp"
+        android:textColor="@android:color/black"
+        android:text="@string/currently_no_customer_has_booked_this_vehicle_to_the_specified_route"/>
+</LinearLayout>

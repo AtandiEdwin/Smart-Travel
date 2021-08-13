@@ -61,11 +61,13 @@
 
     <LinearLayout
         android:layout_below="@+id/topLayout"
+        android:id="@+id/bottomlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:background="@drawable/layout_shadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -267,21 +269,42 @@
         <RelativeLayout
             android:layout_margin="10dp"
             android:layout_width="match_parent"
+            android:backgroundTint="@color/colorAccent"
             android:layout_height="match_parent">
             <androidx.cardview.widget.CardView
+                android:background="@color/colorAccentA"
                 android:layout_width="match_parent"
+                app:cardCornerRadius="50dp"
+                android:layout_above="@+id/navigator"
                 android:layout_height="match_parent"
-                android:backgroundTint="@android:color/darker_gray">
-
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:padding="5dp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/adaptext" />
                 <AdapterViewFlipper
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/adapterFlipperId"
                     android:flipInterval="2000"/>
-
             </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/navigator"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimaryDark"
+                app:itemIconTint="@android:color/white"
+                app:itemTextColor="@android:color/white"
+                app:menu="@menu/nav_items"/>
         </RelativeLayout>
-
     </LinearLayout>
-
 </RelativeLayout>

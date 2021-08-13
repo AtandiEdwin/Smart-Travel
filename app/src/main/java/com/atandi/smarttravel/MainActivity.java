@@ -1,44 +1,58 @@
 package com.atandi.smarttravel;
 
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.atandi.smarttravel.Activities.HomeActivity;
+import com.atandi.smarttravel.Activities.DisplayActivity;
+import com.atandi.smarttravel.Activities.LoginActivity;
+import com.atandi.smarttravel.Activities.MapsActivity;
+import com.atandi.smarttravel.AdminApp.AdminActivities.AdminAct.AdminMainActivity;
+import com.atandi.smarttravel.Models.User;
+import com.atandi.smarttravel.UserServices.UserTrackerActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import io.paperdb.Paper;
+
+import static com.atandi.smarttravel.Constants.PaperComons.USER_NAME;
+import static com.atandi.smarttravel.Constants.PaperComons.USER_PASSWORD;
+import static com.atandi.smarttravel.Constants.PaperComons.USER_PHONE;
 
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
-    private AdapterViewFlipper adapterViewFlipper;
-    private static final String[] TEXT = {"vbooking","trips","tracker","notification",
-    "account","info"
-    };
-    private static final int[] IMAGES = {R.drawable.ic_car,R.drawable.ic_trip,R.drawable.ic_tracker,R.drawable.ic_notifications
-    ,R.drawable.ic_account,R.drawable.ic_info
-    };
-
-    private  int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+// initialize paper
+        Paper.init(this);
 
-        adapterViewFlipper = findViewById(R.id.adapterFlipperId);
-
-//        FlipperAdapter adapter = new FlipperAdapter(this,IMAGES,TEXT);
-//        adapterViewFlipper.setAdapter(adapter);
-//        adapterViewFlipper.setAutoStart(true);
+// create references to the layout elements
+        TextView adaptertext = findViewById(R.id.adaptext);
+        final TextView userNames= findViewById(R.id.userName);
+        BottomNavigationView navigator = findViewById(R.id.navigator);
 
         LinearLayout VehicleLinear = findViewById(R.id.linearVehicleBooking);
         LinearLayout TripsLinear = findViewById(R.id.linearTrips);
@@ -47,6 +61,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         LinearLayout AccountLinear = findViewById(R.id.linearAccount);
         LinearLayout InfoLinear = findViewById(R.id.linearInfo);
 
+// add onclick listeners to the layouts in the main layout
         VehicleLinear.setOnClickListener(this);
         TripsLinear.setOnClickListener(this);
         TrackerLinear.setOnClickListener(this);
@@ -54,22 +69,78 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         AccountLinear.setOnClickListener(this);
         InfoLinear.setOnClickListener(this);
 
+// set the welcoming text
+        adaptertext.setText(R.string.adap);
+
+//  give functionality to the navigation view items(use item reselected to enable the user click the item twice before achieving the functionality)
+        navigator.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.action_share:
+                        Toast.makeText(MainActivity.this, "thank you for planning to share this app", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.action_rate:
+                        Toast.makeText(MainActivity.this, "thank you for planning to rate this app", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.action_admin:
+                        startActivity(new Intent(MainActivity.this, AdminMainActivity.class));
+                        finish();
+                        break;
+
+                    case R.id.action_logout:
+                        Paper.book().destroy();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+                        break;
+                }
+            }
+        });
+
+
+//    detemine which name is to be written in the header
+        final String userPhone = Paper.book().read(USER_PHONE);
+        String pwd = Paper.book().read(USER_PASSWORD);
+        if(userPhone!=null && pwd!=null){
+            if(!userPhone.isEmpty() && !pwd.isEmpty()){
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(userPhone).exists()) {
+                            User user = dataSnapshot.child(userPhone).getValue(User.class);
+                            String headername= user.getUsername();
+                            Paper.book().write(USER_NAME,headername);
+                            userNames.setText(headername);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+        }
+        else{
+            String customer = "Customer";
+            userNames.setText(customer);
+        }
     }
 
+
+//   this is implemented by the view.on click listener
     @Override
     public void onClick(View v) {
-
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-
+        Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
         if(v.getId()==R.id.linearVehicleBooking){
             intent.putExtra("header","Vehicle Booking");
         }
         else if(v.getId()==R.id.linearTrips){
             intent.putExtra("header","Trips");
         }
-        else if(v.getId()==R.id.linearTracker){
-            intent.putExtra("header","Tracker");
-        }
+
         else if (v.getId()==R.id.linearNotifications){
             intent.putExtra("header","Notifications");
         }
@@ -79,51 +150,35 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         else if(v.getId()==R.id.linearInfo){
             intent.putExtra("header","Info Center");
         }
-
+        else if(v.getId()==R.id.linearTracker){
+            intent.putExtra("header","Tracker");
+        }
         startActivity(intent);
-
+        finish();
     }
+    @Override
+    public void onBackPressed() {
 
-    class FlipperAdapter extends BaseAdapter{
-        Context context;
-        int[] images;
-        String[] names;
-        LayoutInflater inflater;
+        final Dialog  dialog = new Dialog(this);
+        dialog.setContentView(R.layout.exit_layout);
+        Button btnexitok = dialog.findViewById(R.id.btnexitok);
+        Button btnexitno = dialog.findViewById(R.id.btnexitno);
 
-        public FlipperAdapter(Context context, int[] images, String[] names) {
-            this.context = context;
-            this.images = images;
-            this.names = names;
-        }
+        btnexitok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        @Override
-        public int getCount() {
-            return names.length;
-        }
+                dialog.dismiss();
+            }
+        });
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
+        btnexitno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            convertView = inflater.inflate(R.layout.flipper_items,null);
-            TextView textView = convertView.findViewById(R.id.TextViewId);
-            ImageView imageView = convertView.findViewById(R.id.ImageViewId);
-
-            textView.setText(names[position]);
-            imageView.setImageResource(images[position]);
-
-            return convertView;
-        }
+        dialog.show();
     }
-
-
 }

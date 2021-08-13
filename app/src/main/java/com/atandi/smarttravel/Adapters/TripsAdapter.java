@@ -1,11 +1,14 @@
 package com.atandi.smarttravel.Adapters;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +55,7 @@ public class TripsAdapter extends RecyclerView.Adapter<MyTripViewHolder> {
         String cost ="Ksh: " + model.getTripCost();
         holder.tripCost.setText(cost);
         holder.seatsBooked.setText(model.getSeatsbooked());
+        holder.tripstatus.setText(model.getTripstatus());
 
     }
 
@@ -61,18 +65,33 @@ public class TripsAdapter extends RecyclerView.Adapter<MyTripViewHolder> {
     }
 }
 
-class MyTripViewHolder extends RecyclerView.ViewHolder{
+class MyTripViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
-    TextView tripRouteName,tripCost,tripDate,tripVehicle,seatsBooked;
+    TextView tripRouteName,tripCost,tripDate,tripVehicle,seatsBooked,tripstatus;
 
     public MyTripViewHolder(@NonNull View itemView) {
         super(itemView);
+        itemView.setOnLongClickListener(this);
 
         tripCost = itemView.findViewById(R.id.costId);
         tripDate = itemView.findViewById(R.id.dateIid);
         tripVehicle = itemView.findViewById(R.id.vehicleId);
         tripRouteName = itemView.findViewById(R.id.routename);
         seatsBooked = itemView.findViewById(R.id.seatsBooked);
+        tripstatus = itemView.findViewById(R.id.tripstatus);
 
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        int pos = getAdapterPosition();
+        Toast.makeText(v.getContext(), ""+ pos, Toast.LENGTH_SHORT).show();
+        if(pos != RecyclerView.NO_POSITION){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
+            dialog.setMessage("working");
+            dialog.show();
+
+        }
+        return true;
     }
 }

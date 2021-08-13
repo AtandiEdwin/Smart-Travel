@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/colorAccent"
-    android:padding="10dp"
+    android:background="@color/colorAccentA"
+    android:padding="5dp"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -122,6 +122,18 @@
             android:layout_height="match_parent"
             android:id="@+id/tripsRecyclerId"/>
         <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/noTrip"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:layout_margin="40dp"
+            android:drawableTop="@drawable/ic_warning"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/black"
+            android:text="@string/no_trip"/>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -131,7 +143,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center"
             android:text="Select the dates by clicking on the calender then click the load button. All your trips will be displayed here"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/colorAccent"/>
     </LinearLayout>
 
 

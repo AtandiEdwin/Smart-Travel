@@ -1,5 +1,6 @@
 package com.atandi.smarttravel.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,11 +33,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.atandi.smarttravel.Adapters.PickPointSelectAdapter;
 import com.atandi.smarttravel.Adapters.RouteSelectAdapter;
+import com.atandi.smarttravel.Adapters.SaccoAdapter;
+import com.atandi.smarttravel.Constants.MyBuilderClass;
 import com.atandi.smarttravel.Constants.MySingleton;
 import com.atandi.smarttravel.Models.DetailsViewModel;
+import com.atandi.smarttravel.Models.PickPointSelectModel;
 import com.atandi.smarttravel.Models.RouteSelectModel;
 import com.atandi.smarttravel.Models.RouteViewModel;
+import com.atandi.smarttravel.Models.SaccoModel;
 import com.atandi.smarttravel.R;
 
 import org.json.JSONArray;
@@ -52,18 +58,23 @@ import java.util.Locale;
 import java.util.Map;
 
 import static com.atandi.smarttravel.Constants.Links.FETCH_DETAILS;
+import static com.atandi.smarttravel.Constants.Links.FETCH_PICKPOINT;
 import static com.atandi.smarttravel.Constants.Links.FETCH_ROUTE;
+import static com.atandi.smarttravel.Constants.Links.FETCH_SACCO;
 
 public class RouteSelectingFragment extends Fragment {
     public RouteSelectingFragment() {
     }
 
-    EditText RouteEdit;
+    MyBuilderClass myBuilderClass = new MyBuilderClass();
+    EditText RouteEdit,pick,EditSACCO;
     private RouteViewModel routeViewModel;
     private DetailsViewModel model;
     Button BtnNext;
-    RecyclerView routeRecycler;
+    RecyclerView routeRecycler,pickRecyclerId,saccoRecyclerId;
     List<RouteSelectModel> mroute;
+    List<PickPointSelectModel> mpick;
+    List<SaccoModel> mySacco;
 
     @Nullable
     @Override
@@ -99,9 +110,11 @@ public class RouteSelectingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mroute = new ArrayList<>();
+        mpick = new ArrayList<>();
+        mySacco = new ArrayList<>();
 
         Date d = new Date();
-        String pattern = "dd-MM-yyyy";
+        final String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String dates = simpleDateFormat.format(d);
 
@@ -109,19 +122,32 @@ public class RouteSelectingFragment extends Fragment {
         TextView dateTextView = view.findViewById(R.id.date);
         dateTextView.setText(dates);
 
-        BtnNext= view.findViewById(R.id.BtnNext);
+        EditSACCO =view.findViewById(R.id.EditSACCO);
+        saccoRecyclerId = view.findViewById(R.id.saccoRecyclerId);
+
         RouteEdit= view.findViewById(R.id.EditRoute);
-
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,new IntentFilter("custom-message"));
-
-        final String MyString = RouteEdit.getText().toString();
-
         routeRecycler= view.findViewById(R.id.routeRecyclerId);
         routeRecycler.setHasFixedSize(true);
 
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, FETCH_ROUTE, new Response.Listener<String>() {
+        pick = view.findViewById(R.id.pick);
+        pickRecyclerId = view.findViewById(R.id.pickRecyclerId);
+
+        BtnNext= view.findViewById(R.id.BtnNext);
+
+
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,new IntentFilter("custom-message"));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver1,new IntentFilter("custom-message1"));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver2,new IntentFilter("sacco_name"));
+
+
+
+
+        final StringRequest saccostringRequest = new StringRequest(Request.Method.GET, FETCH_SACCO, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                mySacco.clear();
 
                 JSONArray jsonArray = null;
 
@@ -131,15 +157,15 @@ public class RouteSelectingFragment extends Fragment {
                     for(int i=0; i<jsonArray.length();i++){
                         JSONObject jsonObject =jsonArray.getJSONObject(i);
 
-                        String rn =jsonObject.getString("routename");
+                        String saccoName =jsonObject.getString("saccoName");
 
-                        RouteSelectModel routeSelectModel = new RouteSelectModel(rn);
-                        mroute.add(routeSelectModel);
+                        SaccoModel saccoSelectModel = new SaccoModel(saccoName);
+                        mySacco.add(saccoSelectModel);
                     }
 
-                    RouteSelectAdapter adapter = new RouteSelectAdapter(getContext(),mroute);
-                    routeRecycler.setAdapter(adapter);
-                    routeRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+                    SaccoAdapter adapter = new SaccoAdapter(getContext(),mySacco);
+                    saccoRecyclerId.setAdapter(adapter);
+                    saccoRecyclerId.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
 
@@ -156,24 +182,146 @@ public class RouteSelectingFragment extends Fragment {
 
                     }
                 }
-                );
+        );
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);
+        requestQueue.add(saccostringRequest);
 
 
+
+
+        EditSACCO.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(saccoRecyclerId.getVisibility()==View.GONE){
+                    saccoRecyclerId.setVisibility(View.VISIBLE);
+//                    BtnNext.setVisibility(View.GONE);
+                }
+                else {
+                    saccoRecyclerId.setVisibility(View.GONE);
+                }
+            }
+        });
 
 
         RouteEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ;
-                if(routeRecycler.getVisibility()==View.GONE){
-                    routeRecycler.setVisibility(View.VISIBLE);
-                    BtnNext.setVisibility(View.GONE);
+                if(EditSACCO.getText().toString().isEmpty()){
+                    myBuilderClass.MyBuilder(getContext(),"Please select your favorite sacco first");
                 }
-                else if(BtnNext.getVisibility()==View.GONE){
-                    BtnNext.setVisibility(View.VISIBLE);
+                else{
+                    final String userSacco  = EditSACCO.getText().toString();
+                    final StringRequest routestringRequest = new StringRequest(Request.Method.POST, FETCH_ROUTE, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            mroute.clear();
+
+                            JSONArray jsonArray = null;
+
+                            try {
+                                jsonArray = new JSONArray(response);
+
+                                for(int i=0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject =jsonArray.getJSONObject(i);
+
+                                    String rn =jsonObject.getString("routename");
+
+                                    RouteSelectModel routeSelectModel = new RouteSelectModel(rn);
+                                    mroute.add(routeSelectModel);
+                                }
+
+                                RouteSelectAdapter adapter = new RouteSelectAdapter(getContext(),mroute);
+                                routeRecycler.setAdapter(adapter);
+                                routeRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            }
+                    ){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String,String> pmap  = new HashMap<>();
+                            pmap.put("sacconame",userSacco);
+                            return pmap;
+                        }
+                    };
+
+                    RequestQueue routerequestQueue = Volley.newRequestQueue(getContext());
+                    routerequestQueue.add(routestringRequest);
+                    if(routeRecycler.getVisibility()==View.GONE){
+                        routeRecycler.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
+
+        pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(RouteEdit.getText().toString().isEmpty()){
+                    myBuilderClass.MyBuilder(getContext(),"Please select your route first");
+                }
+                else{
+                    final String userRoute  = RouteEdit.getText().toString();
+                    final StringRequest stringRequestpickpoint = new StringRequest(Request.Method.POST, FETCH_PICKPOINT, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            mpick.clear();
+
+                            JSONArray jsonArray = null;
+                            try {
+                                jsonArray = new JSONArray(response);
+
+                                for(int i=0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject =jsonArray.getJSONObject(i);
+
+                                    String pn =jsonObject.getString("pick_point");
+
+                                    PickPointSelectModel pickPointSelectModel = new PickPointSelectModel(pn);
+                                    mpick.add(pickPointSelectModel);
+                                }
+
+                                PickPointSelectAdapter pickPointSelectAdapter = new PickPointSelectAdapter(getContext(),mpick);
+                                pickRecyclerId.setAdapter(pickPointSelectAdapter);
+                                pickRecyclerId.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+
+                                }
+                            }
+                    ){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String,String> pmap  = new HashMap<>();
+                            pmap.put("route",userRoute);
+                            return pmap;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                    requestQueue.add(stringRequestpickpoint);
+                    if(pickRecyclerId.getVisibility()==View.GONE){
+                        pickRecyclerId.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -183,71 +331,81 @@ public class RouteSelectingFragment extends Fragment {
         BtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog  progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 final String ROUTE =RouteEdit.getText().toString();
+                final String PICKPOINT = pick.getText().toString();
 
                 if(ROUTE.isEmpty()){
-                    AlertDialog.Builder alert  = new AlertDialog.Builder(getContext());
-                    alert.setTitle("Smart Travel");
-                    alert.setMessage("Please select the route you are travelling");
-                    alert.setCancelable(true);
-                    alert.show();
+                    progressDialog.dismiss();
+                    myBuilderClass.MyBuilder(getContext(),"Please select the route you are travelling");
                 }
                 else{
                     List routepick = new ArrayList();
                     routepick.add(ROUTE);
+                    routepick.add(PICKPOINT);
                     routeViewModel.setRoutepick(routepick);
 
                     StringRequest myrequest = new StringRequest(Request.Method.POST, FETCH_DETAILS, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            JSONArray jsonArray ;
-                            try {
-                                jsonArray = new JSONArray(response);
-                                for(int i= 0; i<jsonArray.length(); i++){
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                                    String vehicleplate = jsonObject.getString("vehicle_plate");
-                                    String vehiclepic = jsonObject.getString("vehicle_pic");
-                                    String vehicleseats = jsonObject.getString("vehicle_number_of_seats");
-                                    String seatsremaining = jsonObject.getString("seats_remaining");
-                                    String cost = jsonObject.getString("cost");
-                                    String drivername = jsonObject.getString("driver_name");
-                                    String drivernumber = jsonObject.getString("driver_number");
-                                    String driverpic = jsonObject.getString("driver_pic");
+                                JSONArray jsonArray ;
+                                try {
+                                    jsonArray = new JSONArray(response);
 
-                                    List mlist= new ArrayList();
-                                    mlist.add(vehicleplate);
-                                    mlist.add(vehiclepic);
-                                    mlist.add(vehicleseats);
-                                    mlist.add(seatsremaining);
-                                    mlist.add(cost);
-                                    mlist.add(drivername);
-                                    mlist.add(drivernumber);
-                                    mlist.add(driverpic);
+                                    if(jsonArray.length()==0){
+                                        progressDialog.dismiss();
 
-                                    model.setMlist(mlist);
+                                        myBuilderClass.MyBuilder(getContext(),"we are sorry none of our vehicles are booking to the selected route at the moment");
+//
+                                    }
+                                    else{
+                                        progressDialog.dismiss();
+                                    for(int i= 0; i<jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+                                        String vehicleplate = jsonObject.getString("vehicle_plate");
+                                        String vehiclepic = jsonObject.getString("vehicle_pic");
+                                        String vehicleseats = jsonObject.getString("vehicle_number_of_seats");
+                                        String seatsremaining = jsonObject.getString("seats_remaining");
+                                        String cost = jsonObject.getString("cost");
+                                        String drivername = jsonObject.getString("driver_name");
+                                        String drivernumber = jsonObject.getString("driver_number");
+                                        String driverpic = jsonObject.getString("driver_pic");
 
+                                        List mlist = new ArrayList();
+                                        mlist.add(vehicleplate);
+                                        mlist.add(vehiclepic);
+                                        mlist.add(vehicleseats);
+                                        mlist.add(seatsremaining);
+                                        mlist.add(cost);
+                                        mlist.add(drivername);
+                                        mlist.add(drivernumber);
+                                        mlist.add(driverpic);
 
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.nav_host_fragmentTwo,new BookingFragment());
-                                    fragmentTransaction.addToBackStack(null);
-                                    fragmentTransaction.commit();
-
-
+                                        model.setMlist(mlist);
+                                        FragmentManager fragmentManager = getFragmentManager();
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        fragmentTransaction.replace(R.id.Framelayoutid, new BookingFragment());
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+                                        progressDialog.dismiss();
+                                    }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    progressDialog.dismiss();
+                                    myBuilderClass.MyBuilder(getContext(),"sorry!! our servers are down at the moment please try again later");
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-
-                        }
                     },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
                                 }
                             }){
                         @Override
@@ -260,18 +418,38 @@ public class RouteSelectingFragment extends Fragment {
                     RequestQueue request = Volley.newRequestQueue(getContext());
                     request.add(myrequest);
                 }
-
-
             }
         });
     }
+
+    public BroadcastReceiver mMessageReceiver2 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String saccoName =  intent.getStringExtra("sacco");
+            EditSACCO.setText(saccoName);
+            saccoRecyclerId.setVisibility(View.GONE);
+        }
+    };
+
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String finalRouteName = intent.getStringExtra("RouteName");
+//            String finalPickName = intent.getStringExtra("PickName");
             RouteEdit.setText(finalRouteName);
             routeRecycler.setVisibility(View.GONE);
+//            pick.setText(finalPickName);
+//            pickRecyclerId.setVisibility(View.GONE);
+        }
+    };
+
+    public BroadcastReceiver mMessageReceiver1 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String finalPickName = intent.getStringExtra("PickName");
+            pick.setText(finalPickName);
+            pickRecyclerId.setVisibility(View.GONE);
             BtnNext.setVisibility(View.VISIBLE);
         }
     };

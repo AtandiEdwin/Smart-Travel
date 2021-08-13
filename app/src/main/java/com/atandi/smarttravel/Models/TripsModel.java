@@ -6,18 +6,17 @@ public class TripsModel {
    private String tripCost;
    private String tripDate;
    private String seatsbooked;
+   private String tripstatus;
 
-    public TripsModel(String routeName, String vehiclePlate, String tripCost, String tripDate, String seatsbooked) {
+    public TripsModel(String routeName, String vehiclePlate, String tripCost, String tripDate, String seatsbooked, String tripstatus) {
         this.routeName = routeName;
         this.vehiclePlate = vehiclePlate;
         this.tripCost = tripCost;
         this.tripDate = tripDate;
         this.seatsbooked = seatsbooked;
+        this.tripstatus = tripstatus;
     }
 
-    public TripsModel() {
-
-    }
 
     public String getRouteName() {
         return routeName;
@@ -57,5 +56,13 @@ public class TripsModel {
 
     public void setSeatsbooked(String seatsbooked) {
         this.seatsbooked = seatsbooked;
+    }
+
+    public String getTripstatus() {
+        return tripstatus;
+    }
+
+    public void setTripstatus(String tripstatus) {
+        this.tripstatus = tripstatus;
     }
 }
