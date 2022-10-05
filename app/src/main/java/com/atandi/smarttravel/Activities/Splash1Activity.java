@@ -27,10 +27,10 @@ public class Splash1Activity extends AppCompatActivity {
                         MainActivity.class));
                 finish();
             }
-        }, secondsDelayed * 5000);
+        }, secondsDelayed * 1000);
 
         circularFillableLoaders = findViewById(R.id.circularFillableLoaders);
-        circularFillableLoaders.setProgress(progress, 10000);
+        circularFillableLoaders.setProgress(progress, 2000);
 
     }
 }

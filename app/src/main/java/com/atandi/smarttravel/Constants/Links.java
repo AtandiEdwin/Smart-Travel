@@ -1,7 +1,7 @@
 package com.atandi.smarttravel.Constants;
 
 public class Links {
-    private static  final  String BASE_URL = "http://192.168.43.50/SmartTravel/";
+    private static  final  String BASE_URL = "http://192.168.43.95/SmartTravel/";
 
     public static  final  String FETCH_ROUTE= BASE_URL + "routes.php";
     public static  final  String FETCH_PICKPOINT= BASE_URL + "pickpoint.php";
